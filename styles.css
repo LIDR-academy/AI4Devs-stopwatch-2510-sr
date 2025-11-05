@@ -1,0 +1,115 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Layout */
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+/* Display */
+.display-container {
+  background: #e7ebff; /* light bluish like screenshot */
+  border-radius: 3rem;
+  border: 12px solid #333333;
+  padding: 1.5rem 3.5rem 1.2rem;
+  min-width: min(90vw, 1100px);
+  text-align: center;
+  position: relative;
+}
+
+.time-main {
+  font-size: clamp(3rem, 10vw, 8rem);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  color: #000000;
+}
+
+.separator {
+  padding: 0 0.15em;
+}
+
+.time-millis {
+  position: absolute;
+  right: 3.5rem;
+  bottom: 0.6rem;
+  font-size: clamp(1.2rem, 2.4vw, 2rem);
+  font-weight: 600;
+  color: #000000;
+}
+
+/* Buttons */
+.controls {
+  display: flex;
+  gap: 4rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.btn {
+  cursor: pointer;
+  border: 10px solid #333333;
+  border-radius: 2.2rem;
+  font-size: clamp(2rem, 3vw, 3rem);
+  padding: 1.2rem 4.5rem;
+  font-weight: 600;
+  min-width: 260px;
+  box-shadow: 0 12px 0 rgba(0, 0, 0, 0.25);
+  transition: transform 0.05s ease-out, box-shadow 0.05s ease-out, filter 0.1s;
+}
+
+.btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.25);
+  filter: brightness(0.97);
+}
+
+.btn-start {
+  background: linear-gradient(#71ff3a, #47c322);
+}
+
+.btn-start.running {
+  /* same green, slightly darker when running */
+  background: linear-gradient(#5bd627, #3aa51b);
+}
+
+.btn-clear {
+  background: linear-gradient(#ff4436, #d92d23);
+}
+
+/* Small screens */
+@media (max-width: 600px) {
+  .display-container {
+    padding: 1.2rem 1.8rem 0.9rem;
+    min-width: 0;
+  }
+
+  .time-millis {
+    right: 1.8rem;
+  }
+
+  .controls {
+    gap: 1.5rem;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn {
+    min-width: 220px;
+  }
+}
