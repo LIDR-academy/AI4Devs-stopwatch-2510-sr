@@ -1,0 +1,4 @@
+Act as an expert sw developer with vast experience in html and js. Create a stopwatch app using the attached index.html and script.js as seeds. Use the attached image to generate the visual design, respect colors and shapes, start button will start the stopwatch function, when t starts the start button will turn into a stop button. when stop button is presses the timer will stop. clear button will send timer to 0, if it is running it will automatically stop it and send to 0. timer box has hours:minutes:seconds and the 3 small 000 below the seconds are milliseconds. 
+
+index.html 
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Timer and Countdown</title> <link rel="stylesheet" href="styles.css"> </head> <body> <h1>Timer and Countdown</h1> <script src="script.js"></script> </body> </html> if you have any questions ask me otherwise write the html and js
