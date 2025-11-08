@@ -1,13 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Timer and Countdown</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stopwatch & Countdown</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<h1>Timer and Countdown</h1>
-<script src="script.js"></script>
+
+  <!-- ===== PANTALLA INICIAL ===== -->
+  <div id="home-screen" class="screen active">
+    <div class="option" id="open-stopwatch">
+      <h2>Stopwatch</h2>
+      <img 
+      src="https://cdn-icons-png.flaticon.com/512/3148/3148312.png" 
+      class="icon">    </div>
+    <div class="option" id="open-countdown">
+      <h2>Countdown</h2>
+      <img 
+      src="https://cdn-icons-png.flaticon.com/512/3148/3148295.png" 
+      class="icon">    </div>
+  </div>
+
+  <!-- ===== PANTALLA STOPWATCH ===== -->
+  <div id="stopwatch-screen" class="screen">
+    <div class="display">
+      <div id="sw-time">00:00:00</div>
+      <div id="sw-ms">000</div>
+    </div>
+
+    <div class="buttons">
+      <button id="btn-start-sw" class="green">Start</button>
+      <button id="btn-clear-sw" class="red">Clear</button>
+      <button id="btn-back-sw" class="gray">Back</button>
+    </div>
+  </div>
+
+  <!-- ===== PANTALLA COUNTDOWN ===== -->
+  <div id="countdown-screen" class="screen">
+    <div class="display">
+      <div id="cd-time">00:00:00</div>
+      <div id="cd-ms">000</div>
+    </div>
+
+    <div class="numpad" id="numpad">
+      <button>5</button><button>6</button><button>7</button><button>8</button><button>9</button>
+      <button>0</button><button>1</button><button>2</button><button>3</button><button>4</button>
+    </div>
+
+    <div class="buttons">
+      <button id="btn-set-cd" class="green">Set</button>
+      <button id="btn-clear-cd" class="gray">Clear</button>
+      <button id="btn-back-cd" class="red">Back</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
