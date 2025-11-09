@@ -1,13 +1,46 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Timer and Countdown</title>
-<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <title>Stopwatch / Countdown</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<h1>Timer and Countdown</h1>
+<div class="app">
+    <h1 class="app-title">Stopwatch / Countdown</h1>
+
+    <!-- Mode selector -->
+    <div class="mode-switcher">
+        <label for="modeSelect">Mode:</label>
+        <select id="modeSelect">
+            <option value="stopwatch">Stopwatch</option>
+            <option value="countdown" selected>Countdown</option>
+        </select>
+    </div>
+
+    <!-- Countdown settings -->
+    <div id="countdownSettings" class="countdown-settings">
+        <span>Set time:</span>
+        <input id="hoursInput"   type="number" min="0" value="0"  /> h
+        <input id="minutesInput" type="number" min="0" max="59" value="8" /> m
+        <input id="secondsInput" type="number" min="0" max="59" value="0" /> s
+        <button id="setCountdownBtn" class="small-btn">Set</button>
+    </div>
+
+    <!-- Timer display -->
+    <div id="timerDisplay" class="timer-display">
+        <span id="timeMain" class="time-main">00:08:00</span>
+        <span id="timeMs" class="time-ms">000</span>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <button id="startPauseBtn" class="control-btn start-btn">Start</button>
+        <button id="clearBtn" class="control-btn clear-btn">Clear</button>
+    </div>
+</div>
+
 <script src="script.js"></script>
 </body>
 </html>
