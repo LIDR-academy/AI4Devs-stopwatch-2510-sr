@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cronómetro</title>
+
+  <!-- CSS incrustado -->
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+      gap: 2.5rem;
+    }
+
+    .timer-wrapper {
+      background: #e7eaff;
+      border: 6px solid #333;
+      border-radius: 40px;
+      width: min(95vw, 1100px);
+      height: 210px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .time-display {
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: flex-end;
+      gap: 1rem;
+    }
+
+    /* Parte grande (días:horas:minutos:segundos) */
+    .time-main {
+      font-size: clamp(3.4rem, 7.2vw, 6rem);
+      line-height: 1;
+    }
+
+    /* Milisegundos en esquina inferior derecha */
+    .time-ms {
+      position: absolute;
+      bottom: 16px;
+      right: 35px;
+      font-size: clamp(1.6rem, 3vw, 2.3rem);
+      font-weight: 600;
+    }
+
+    /* Contenedor de botones */
+    .controls {
+      display: flex;
+      gap: 3rem;
+      width: min(95vw, 1100px);
+      justify-content: center;
+    }
+
+    .btn {
+      min-width: 250px;
+      height: 140px;
+      border-radius: 30px;
+      border: 6px solid #333;
+      font-size: 3rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.08s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.985);
+    }
+
+    .btn-start {
+      background: linear-gradient(#63ff46, #33b020);
+      color: #000;
+    }
+
+    /* Cuando está corriendo o en pausa, el botón se pone azul */
+    .btn-start.running,
+    .btn-start.paused {
+      background: #007bff;
+      color: #fff;
+    }
+
+    .btn-clear {
+      background: #e62c1f;
+      color: #000;
+    }
+
+    /* Responsivo un poco más chico */
+    @media (max-width: 640px) {
+      .btn {
+        min-width: 180px;
+        height: 110px;
+        font-size: 2.3rem;
+      }
+      .timer-wrapper {
+        height: 185px;
+      }
+      .time-ms {
+        bottom: 12px;
+        right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="timer-wrapper">
+    <div class="time-display">
+      <!-- dd:hh:mm:ss -->
+      <div id="time-main" class="time-main">00:00:00:00</div>
+    </div>
+    <div id="time-ms" class="time-ms">000</div>
+  </div>
+
+  <div class="controls">
+    <button id="btn-start" class="btn btn-start">Iniciar</button>
+    <button id="btn-clear" class="btn btn-clear">Limpiar</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
