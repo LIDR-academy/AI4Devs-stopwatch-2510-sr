@@ -1,0 +1,199 @@
+/* ==== Timer + Countdown UI (matches provided mock) ==== */
+/* Author: 20-year dev — clean structure, variables, accessible focus */
+
+:root{
+  --page-bg: #ffffff;
+  --ink: #0f0f0f;
+
+  --display-bg: #e9ecff;          /* pale blue like the image */
+  --display-border: #2f2f2f;
+  --display-border-width: 14px;
+
+  --btn-radius: 28px;
+  --btn-font-weight: 600;
+
+  --green-1: #78ef52;
+  --green-2: #43c025;
+  --green-text: #0b2c0b;
+
+  --red-1: #f2503d;
+  --red-2: #cc1f11;
+  --red-text: #2c0b0b;
+
+  --shadow: 0 10px 24px rgba(0,0,0,.12);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body{
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans",
+               "Liberation Sans", sans-serif;
+  color: var(--ink);
+  background: var(--page-bg);
+  display: grid;
+  place-items: start center;
+  gap: 16px;
+  padding: 28px 18px 44px;
+}
+
+h1{
+  margin: 0 0 10px;
+  font-size: clamp(20px, 3vw, 28px);
+  letter-spacing: .3px;
+  text-align: center;
+}
+
+/* Layout wrapper */
+.timer-app{
+  width: min(1200px, 96vw);
+  display: grid;
+  grid-template-rows: auto auto auto;
+  gap: 22px;
+  align-items: center;
+  justify-items: center;
+}
+
+/* Top utility row (mode + countdown set) */
+.control-strip{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.segmented{
+  display: inline-flex;
+  border: 1px solid #d5d7df;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #f6f7fb;
+}
+.segmented button{
+  appearance: none;
+  border: 0;
+  padding: 8px 14px;
+  font-weight: 600;
+  background: transparent;
+  cursor: pointer;
+}
+.segmented button.active{
+  background: white;
+  outline: 2px solid #cfd3ff;
+}
+
+/* Countdown time setter */
+.setter{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+.setter label{
+  opacity: .75;
+  margin-right: 4px;
+}
+.setter input{
+  width: 54px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid #d6d8e2;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-size: 16px;
+  background: #fff;
+}
+.setter .apply{
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid #cfd3ff;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+.setter[aria-hidden="true"]{
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+}
+
+/* Big display (matches screenshot) */
+.display{
+  position: relative;
+  width: 100%;
+  border-radius: 42px;
+  background: var(--display-bg);
+  border: var(--display-border-width) solid var(--display-border);
+  box-shadow: var(--shadow);
+  padding: clamp(16px, 3vw, 26px) clamp(18px, 4vw, 40px) clamp(30px, 5vw, 44px);
+  text-align: center;
+}
+
+.time{
+  font-variant-numeric: tabular-nums lining-nums;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .02em;
+  /* scales like the image: huge but responsive */
+  font-size: clamp(56px, 12vw, 220px);
+  color: #0b0b0b;
+  user-select: none;
+}
+
+/* Tiny milliseconds at bottom-right */
+.millis{
+  position: absolute;
+  right: clamp(16px, 3vw, 40px);
+  bottom: clamp(6px, 1vw, 16px);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(12px, 2vw, 40px);
+  font-weight: 700;
+}
+
+/* Button row */
+.actions{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(16px, 3vw, 40px);
+}
+
+.btn{
+  appearance: none;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 3.5vw, 26px);
+  border-radius: 32px;
+  border: 0;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  text-align: center;
+  font-size: clamp(28px, 4.2vw, 72px); /* big text like the image */
+  font-weight: var(--btn-font-weight);
+  transition: transform .05s ease, filter .15s ease;
+  user-select: none;
+}
+.btn:active{ transform: translateY(1px) scale(.995); }
+.btn:focus-visible{ outline: 3px solid #1a66ff55; outline-offset: 2px; }
+
+.btn-start{
+  color: var(--green-text);
+  background-image: linear-gradient(to bottom, var(--green-1), var(--green-2));
+}
+.btn-clear{
+  color: var(--red-text);
+  background-image: linear-gradient(to bottom, var(--red-1), var(--red-2));
+}
+
+/* Small help */
+.kbd-hint{
+  opacity: .6;
+  font-size: 12px;
+  margin-top: -10px;
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce){
+  .btn{ transition: none; }
+}
