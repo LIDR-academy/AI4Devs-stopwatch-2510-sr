@@ -1,13 +1,356 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Timer and Countdown</title>
-<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Timer Component</title>
+    <style>
+        /* Estilos base para que el componente sea autocontenido */
+        :root {
+            --color-start: #4CAF50;
+            --color-stop: #f44336;
+            --color-clear: #f44336;
+            --color-bg-display: #E6E6FA;
+            --color-border: #333;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        #timer-app {
+            border: 2px solid var(--color-border);
+            border-radius: 12px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            min-width: 380px;
+        }
+
+        /* Controles de Pestañas (Modo 'both') */
+        .mode-controls {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #555;
+            border: none;
+            background: none;
+            font-size: 1rem;
+        }
+
+        .tab.active {
+            color: #000;
+            border-bottom: 3px solid var(--color-start);
+        }
+
+        /* Ocultar secciones/tabs según el modo */
+        .mode-stopwatch .mode-controls,
+        .mode-countdown .mode-controls,
+        .mode-stopwatch .countdown-section,
+        .mode-countdown .stopwatch-section {
+            display: none;
+        }
+        
+        .timer-section {
+            display: none; /* Oculto por defecto */
+        }
+        
+        .timer-section.active {
+            display: block; /* Visible si está activo */
+        }
+
+        /* Display del Reloj */
+        .display {
+            background-color: var(--color-bg-display);
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            padding: 15px 20px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-align: center;
+            color: #000;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .display .milli {
+            font-size: 1.5rem;
+            color: #444;
+            position: absolute;
+            bottom: 8px;
+            right: 15px;
+        }
+        
+        .display-countdown {
+            font-size: 3rem;
+        }
+
+        /* Inputs para Countdown */
+        .countdown-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .countdown-inputs input {
+            width: 60px;
+            font-size: 1.5rem;
+            text-align: center;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        
+        .countdown-inputs label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        /* Botones */
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 15px;
+        }
+
+        .btn {
+            flex-grow: 1;
+            padding: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: white;
+            border-bottom: 4px solid rgba(0, 0, 0, 0.2);
+            transition: all 0.1s ease;
+        }
+        
+        .btn:active {
+            border-bottom-width: 2px;
+            transform: translateY(2px);
+        }
+
+        .btn-start {
+            background-color: var(--color-start);
+        }
+
+       .btn-stop {
+            background-color: #FF9800;
+        }
+
+        .btn-clear {
+            background-color: var(--color-clear);
+        }
+
+        /* Link de documentación */
+        .docs-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
-<h1>Timer and Countdown</h1>
-<script src="script.js"></script>
+
+    <div id="timer-app">
+
+        <div class="mode-controls">
+            <button class="tab active" data-mode="stopwatch">Stopwatch</button>
+            <button class="tab" data-mode="countdown">Countdown</button>
+        </div>
+
+        <div id="stopwatch-section" class="timer-section">
+            <div class="display">
+                <span id="sw-display">00:00:00</span>
+                <span id="sw-milli" class="milli">000</span>
+            </div>
+            <div class="buttons">
+                <button id="sw-start" class="btn btn-start">Start</button>
+                <button id="sw-clear" class="btn btn-clear">Clear</button>
+            </div>
+        </div>
+
+        <div id="countdown-section" class="timer-section">
+            <div class="countdown-inputs">
+                <label>H <input id="cd-hours" type="number" min="0" value="0"></label>
+                <label>M <input id="cd-minutes" type="number" min="0" max="999" value="8"></label>
+                <label>S <input id="cd-seconds" type="number" min="0" max="999" value="0"></label>
+            </div>
+            <div class="display display-countdown">
+                <span id="cd-display">00:08:00</span>
+				<span id="cd-milli" class="milli">000</span>
+            </div>
+            <div class="buttons">
+                <button id="cd-start" class="btn btn-start">Start</button>
+                <button id="cd-clear" class="btn btn-clear">Clear</button>
+            </div>
+        </div>
+    </div>
+    
+    <a href="document.html" target="_blank" class="docs-link">Cómo integrar este componente</a>
+
+    <script src="script.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- 1. CONFIGURACIÓN DEL MODO ---
+            const urlParams = new URLSearchParams(window.location.search);
+            // modo por defecto 'both' si no se especifica
+            const mode = urlParams.get('mode') || 'both'; 
+            
+            const app = document.getElementById('timer-app');
+            app.className = `mode-${mode}`; // Controla la visibilidad CSS
+
+            // --- 2. REFERENCIAS AL DOM ---
+            // Pestañas
+            const tabs = document.querySelectorAll('.tab');
+            const swSection = document.getElementById('stopwatch-section');
+            const cdSection = document.getElementById('countdown-section');
+
+            // Stopwatch
+            const swDisplay = document.getElementById('sw-display');
+            const swMilli = document.getElementById('sw-milli');
+            const swStartBtn = document.getElementById('sw-start');
+            const swClearBtn = document.getElementById('sw-clear');
+
+            // Countdown
+            const cdHoursIn = document.getElementById('cd-hours');
+            const cdMinutesIn = document.getElementById('cd-minutes');
+            const cdSecondsIn = document.getElementById('cd-seconds');
+            const cdDisplay = document.getElementById('cd-display');
+			const cdMilli = document.getElementById('cd-milli');
+            const cdStartBtn = document.getElementById('cd-start');
+            const cdClearBtn = document.getElementById('cd-clear');
+
+            // --- 3. LÓGICA DE VISUALIZACIÓN ---
+            
+            // Inicializar vista según el modo
+            if (mode === 'stopwatch') {
+                swSection.classList.add('active');
+            } else if (mode === 'countdown') {
+                cdSection.classList.add('active');
+            } else { // 'both'
+                swSection.classList.add('active'); // Empezar en Stopwatch
+            }
+
+            // Manejador de pestañas (solo para modo 'both')
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    swSection.classList.remove('active');
+                    cdSection.classList.remove('active');
+
+                    if (tab.dataset.mode === 'stopwatch') {
+                        swSection.classList.add('active');
+                    } else {
+                        cdSection.classList.add('active');
+                    }
+                });
+            });
+
+            // --- 4. CONEXIÓN DE EVENTOS (PEGAMENTO) ---
+
+            // STOPWATCH
+            swStartBtn.addEventListener('click', () => {
+                // Llamamos a la función de la librería
+                startStopStopwatch(
+                    (time, milli) => { // Callback para actualizar display
+                        swDisplay.textContent = time;
+                        swMilli.textContent = milli;
+                    },
+                    (isRunning) => { // Callback para actualizar botón
+                        swStartBtn.textContent = isRunning ? 'Stop' : 'Start';
+                        swStartBtn.classList.toggle('btn-stop', isRunning);
+                    }
+                );
+            });
+
+            swClearBtn.addEventListener('click', () => {
+                clearStopwatch(
+                    (time, milli) => {
+                        swDisplay.textContent = time;
+                        swMilli.textContent = milli;
+                    },
+                    (isRunning) => {
+                        swStartBtn.textContent = 'Start';
+                        swStartBtn.classList.remove('btn-stop');
+                    }
+                );
+            });
+
+            // COUNTDOWN
+            const cdInputs = [cdHoursIn, cdMinutesIn, cdSecondsIn];
+
+            // Normalizar valores al salir del input
+            cdInputs.forEach(input => {
+                input.addEventListener('blur', () => {
+                    normalizeCountdownInputs(cdHoursIn, cdMinutesIn, cdSecondsIn);
+                });
+            });
+
+            cdStartBtn.addEventListener('click', () => {
+                startStopCountdown(
+                    [cdHoursIn, cdMinutesIn, cdSecondsIn],
+					(time, milli) => { // Update display
+                        cdDisplay.textContent = time;
+                        cdMilli.textContent = milli;
+                    },
+                    (isRunning) => { // Update button
+                        cdStartBtn.textContent = isRunning ? 'Stop' : 'Start';
+                        cdStartBtn.classList.toggle('btn-stop', isRunning);
+                    },
+                    () => { // OnFinish
+                         alert('¡Tiempo! 🔔');
+                    }
+                );
+            });
+
+            cdClearBtn.addEventListener('click', () => {
+                clearCountdown(
+                    [cdHoursIn, cdMinutesIn, cdSecondsIn],
+                    (time, milli) => {
+                        cdDisplay.textContent = time;
+                        cdMilli.textContent = milli;
+                    },
+                    (isRunning) => {
+                        cdStartBtn.textContent = 'Start';
+                        cdStartBtn.classList.remove('btn-stop');
+                    }
+                );
+            });
+
+            // Sincronizar display inicial del countdown
+			const { time, milli } = formatTime(
+                (parseInt(cdHoursIn.value) * 3600 + parseInt(cdMinutesIn.value) * 60 + parseInt(cdSecondsIn.value)) * 1000,
+                true // SÍ milisegundos
+			);
+			cdDisplay.textContent = time;
+			cdMilli.textContent = milli;
+
+        });
+    </script>
 </body>
 </html>

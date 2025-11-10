@@ -1,0 +1,12 @@
+{
+  "name": "web-timer-component",
+  "version": "1.0.0",
+  "description": "Componente de Stopwatch y Countdown sin frameworks.",
+  "main": "script.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

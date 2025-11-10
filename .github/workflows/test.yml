@@ -1,0 +1,37 @@
+# .github/workflows/ci.yml
+
+name: CI de Tests del Componente Timer
+
+# Disparadores:
+on:
+  push:
+    branches:
+      - main  # Al empujar a main
+  pull_request:
+    branches:
+      - main  # Al abrir un PR contra main
+
+jobs:
+  test:
+    name: Ejecutar Tests Unitarios
+    runs-on: ubuntu-latest # Usar la última versión de Ubuntu
+
+    steps:
+      # 1. Obtener el código del repositorio
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      # 2. Configurar el entorno de Node.js
+      - name: Configurar Node.js v18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm' # Habilitar caché para 'npm install'
+
+      # 3. Instalar dependencias
+      - name: Instalar dependencias (npm ci)
+        run: npm ci # 'ci' es más rápido y seguro que 'install' en CI
+
+      # 4. Ejecutar los tests
+      - name: Ejecutar Tests (npm test)
+        run: npm test
