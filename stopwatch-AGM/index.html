@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timer and Countdown</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.container {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    min-width: 500px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.view {
+    display: none;
+}
+
+.view.active {
+    display: block;
+}
+
+/* Main View */
+.main-options {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.option-card {
+    flex: 1;
+    padding: 40px 20px;
+    border: 3px solid #ddd;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.option-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    border-color: #667eea;
+}
+
+.option-card .icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.option-card .label {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Timer Display */
+.timer-display {
+    background: #f0f0f0;
+    border: 3px solid #333;
+    border-radius: 15px;
+    padding: 30px 20px;
+    margin: 30px 0;
+    font-family: 'Courier New', monospace;
+}
+
+.time-main {
+    font-size: 72px;
+    font-weight: bold;
+    color: #000;
+    letter-spacing: 5px;
+}
+
+.time-ms {
+    font-size: 36px;
+    color: #666;
+    margin-left: 10px;
+}
+
+.timer-display.blink {
+    animation: blinkAnimation 0.5s infinite;
+}
+
+@keyframes blinkAnimation {
+    0%, 50% {
+        background: #f0f0f0;
+    }
+    51%, 100% {
+        background: #ffcccc;
+    }
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+button {
+    padding: 20px 40px;
+    font-size: 20px;
+    font-weight: bold;
+    border: 3px solid #000;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 150px;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-start {
+    background: #4ade80;
+    color: #000;
+}
+
+.btn-pause {
+    background: #fbbf24;
+    color: #000;
+}
+
+.btn-continue {
+    background: #60a5fa;
+    color: #000;
+}
+
+.btn-clear {
+    background: #ef4444;
+    color: #000;
+}
+
+.btn-set {
+    background: #8b5cf6;
+    color: white;
+}
+
+.btn-back {
+    background: #3b82f6;
+    color: white;
+    margin-top: 20px;
+    padding: 15px 30px;
+    font-size: 18px;
+}
+
+/* Countdown Input */
+.countdown-input {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0;
+}
+
+.time-input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.time-input-group label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.time-input-group input {
+    width: 80px;
+    height: 60px;
+    font-size: 32px;
+    text-align: center;
+    border: 3px solid #333;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+}
+
+.time-separator {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 20px 5px 0 5px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Timer and Countdown</h1>
+    
+    <!-- Main View -->
+    <div id="mainView" class="view active">
+        <div class="main-options">
+            <div class="option-card" onclick="showView('stopwatch')">
+                <div class="icon">⬆️</div>
+                <div class="label">Stopwatch</div>
+            </div>
+            <div class="option-card" onclick="showView('countdown')">
+                <div class="icon">⬇️</div>
+                <div class="label">Countdown</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stopwatch View -->
+    <div id="stopwatchView" class="view">
+        <div class="timer-display">
+            <span class="time-main" id="stopwatchTime">00:00:00</span>
+            <span class="time-ms" id="stopwatchMs">000</span>
+        </div>
+        <div class="button-group">
+            <button id="stopwatchBtn" class="btn-start" onclick="toggleStopwatch()">Start</button>
+            <button class="btn-clear" onclick="clearStopwatch()">Clear</button>
+        </div>
+        <button class="btn-back" onclick="showView('main')">← Back</button>
+    </div>
+    
+    <!-- Countdown View -->
+    <div id="countdownView" class="view">
+        <!-- Input Phase -->
+        <div id="countdownInputPhase">
+            <div class="countdown-input">
+                <div class="time-input-group">
+                    <label>Hours</label>
+                    <input type="number" id="inputHours" min="0" max="23" value="0" oninput="validateCountdownInput()">
+                </div>
+                <span class="time-separator">:</span>
+                <div class="time-input-group">
+                    <label>Minutes</label>
+                    <input type="number" id="inputMinutes" min="0" max="59" value="0" oninput="validateCountdownInput()">
+                </div>
+                <span class="time-separator">:</span>
+                <div class="time-input-group">
+                    <label>Seconds</label>
+                    <input type="number" id="inputSeconds" min="0" max="59" value="0" oninput="validateCountdownInput()">
+                </div>
+            </div>
+            <div class="button-group">
+                <button id="setBtn" class="btn-set" onclick="setCountdown()" disabled>Set</button>
+                <button class="btn-clear" onclick="clearCountdownInput()">Clear</button>
+            </div>
+        </div>
+        
+        <!-- Timer Phase -->
+        <div id="countdownTimerPhase" style="display: none;">
+            <div id="countdownDisplay" class="timer-display">
+                <span class="time-main" id="countdownTime">00:00:00</span>
+                <span class="time-ms" id="countdownMs">000</span>
+            </div>
+            <div class="button-group">
+                <button id="countdownBtn" class="btn-start" onclick="toggleCountdown()">Start</button>
+                <button class="btn-clear" onclick="clearCountdown()">Clear</button>
+                <button class="btn-set" onclick="resetCountdown()">Reset</button>
+            </div>
+        </div>
+        
+        <button class="btn-back" onclick="showView('main')">← Back</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
