@@ -145,7 +145,7 @@ describe('Countdown', () => {
         jest.advanceTimersByTime(1100);
         // El display se actualiza con el "techo" (aún 3s restantes, pero ya son 2)
         // formatTime(remaining + 999) -> 1900ms + 999 = 2899ms -> "00:00:02"
-        expect(updateDisplayCB).toHaveBeenLastCalledWith('00:00:02');
+        expect(updateDisplayCB).toHaveBeenLastCalledWith('00:00:01', '900');
 
         // 4. Avanzar hasta el final (3.1 segundos total)
         jest.advanceTimersByTime(2000); // 1100 + 2000 = 3100ms
@@ -155,7 +155,7 @@ describe('Countdown', () => {
         // Check: Botón reseteado
         expect(updateButtonCB).toHaveBeenLastCalledWith(false);
         // Check: Display reseteado
-        expect(updateDisplayCB).toHaveBeenLastCalledWith('00:00:00');
+        expect(updateDisplayCB).toHaveBeenLastCalledWith('00:00:00', '000');
         // Check: Inputs desbloqueados
         expect(mockInputs.s.disabled).toBe(false);
     });
@@ -172,7 +172,7 @@ describe('Countdown', () => {
         // Check: Botón reseteado
         expect(updateButtonCB).toHaveBeenLastCalledWith(false);
         // Check: Display reseteado (al valor por defecto de los inputs)
-        expect(updateDisplayCB).toHaveBeenLastCalledWith('00:08:00');
+        expect(updateDisplayCB).toHaveBeenLastCalledWith('00:08:00', '000');
         // Check: Inputs reseteados y habilitados
         expect(mockInputs.h.value).toBe(0);
         expect(mockInputs.m.value).toBe(8); // El valor por defecto

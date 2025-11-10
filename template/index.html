@@ -199,6 +199,7 @@
             </div>
             <div class="display display-countdown">
                 <span id="cd-display">00:08:00</span>
+				<span id="cd-milli" class="milli">000</span>
             </div>
             <div class="buttons">
                 <button id="cd-start" class="btn btn-start">Start</button>
@@ -238,6 +239,7 @@
             const cdMinutesIn = document.getElementById('cd-minutes');
             const cdSecondsIn = document.getElementById('cd-seconds');
             const cdDisplay = document.getElementById('cd-display');
+			const cdMilli = document.getElementById('cd-milli');
             const cdStartBtn = document.getElementById('cd-start');
             const cdClearBtn = document.getElementById('cd-clear');
 
@@ -312,8 +314,9 @@
             cdStartBtn.addEventListener('click', () => {
                 startStopCountdown(
                     [cdHoursIn, cdMinutesIn, cdSecondsIn],
-                    (time) => { // Update display
+					(time, milli) => { // Update display
                         cdDisplay.textContent = time;
+                        cdMilli.textContent = milli;
                     },
                     (isRunning) => { // Update button
                         cdStartBtn.textContent = isRunning ? 'Stop' : 'Start';
@@ -328,8 +331,9 @@
             cdClearBtn.addEventListener('click', () => {
                 clearCountdown(
                     [cdHoursIn, cdMinutesIn, cdSecondsIn],
-                    (time) => {
+                    (time, milli) => {
                         cdDisplay.textContent = time;
+                        cdMilli.textContent = milli;
                     },
                     (isRunning) => {
                         cdStartBtn.textContent = 'Start';
@@ -339,10 +343,12 @@
             });
 
             // Sincronizar display inicial del countdown
-            cdDisplay.textContent = formatTime(
+			const { time, milli } = formatTime(
                 (parseInt(cdHoursIn.value) * 3600 + parseInt(cdMinutesIn.value) * 60 + parseInt(cdSecondsIn.value)) * 1000,
-                false // no milisegundos
-            );
+                true // SÍ milisegundos
+			);
+			cdDisplay.textContent = time;
+			cdMilli.textContent = milli;
 
         });
     </script>

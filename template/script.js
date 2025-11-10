@@ -163,15 +163,16 @@ function startStopCountdown(inputs, updateDisplayCB, updateButtonCB, onFinishCB)
                 clearInterval(countdownState.intervalId);
                 countdownState.isRunning = false;
                 countdownState.targetTime = 0;
-                updateDisplayCB("00:00:00");
+                updateDisplayCB("00:00:00", "000");
                 updateButtonCB(false);
                 inputs.forEach(input => input.disabled = false);
                 onFinishCB(); // Lanzar callback de finalización
             } else {
                 // Actualizar display (redondeando al segundo más cercano)
-                updateDisplayCB(formatTime(remaining + 999, false));
+                const { time, milli } = formatTime(remaining, true);
+				updateDisplayCB(time, milli);
             }
-        }, 100); // Chequear cada 100ms
+        }, 10); // Chequear cada 10ms
     }
     updateButtonCB(countdownState.isRunning);
 }
@@ -199,7 +200,9 @@ function clearCountdown(inputs, updateDisplayCB, updateButtonCB) {
     });
     
     // Resetear display al valor de los inputs
-    updateDisplayCB("00:08:00");
+    const defaultMillis = (parseInt(inputs[1].value) * 60) * 1000;
+    const { time, milli } = formatTime(defaultMillis, true);
+    updateDisplayCB(time, milli);
     updateButtonCB(false);
 }
 
