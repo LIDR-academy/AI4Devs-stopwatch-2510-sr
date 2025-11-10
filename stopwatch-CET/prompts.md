@@ -177,3 +177,7 @@ Once I have your answers, I’ll generate index.html and script.js exactly as re
 # Prompt 4 (plus attached screenshot of how it looked)
 
 The stopwatch watch milliseconds location under seconds layout causes the seconds to not be aligned with the minutes beside it.  See attached screenshot. Can you make it so the HH:MM:SS are fully aligned and the miliseconds small font is located under SS?
+
+# Prompt 5
+
+Now nit picky, could you please make it so there is half the current distance between the SS and miliseconds (See attached screenshot) and the same space between the milliseconds and the clockwatch border? There should be the same distance between milseconds to the SS and to the border.
