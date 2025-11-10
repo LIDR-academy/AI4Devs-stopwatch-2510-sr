@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer and Countdown</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h1>Timer and Countdown</h1>
+<div id="main-menu" class="menu-container">
+    <button id="btn-stopwatch" class="main-menu-btn">Stopwatch</button>
+    <button id="btn-countdown" class="main-menu-btn">Countdown</button>
+</div>
+
+<div id="stopwatch-screen" class="screen-container" style="display: none;">
+    <div class="display-container">
+        <span id="stopwatch-hour" class="display-part">00</span>:
+        <span id="stopwatch-minute" class="display-part">00</span>:
+        <span id="stopwatch-second" class="display-part">00</span>
+        <span id="stopwatch-ms" class="display-part display-ms">000</span>
+    </div>
+    <div class="button-row">
+        <button id="stopwatch-start" class="btn green">Start</button>
+        <button id="stopwatch-reset" class="btn red">Clear</button>
+    </div>
+    <button id="stopwatch-back" class="btn back-btn">Back</button>
+</div>
+
+<div id="countdown-input-screen" class="screen-container" style="display: none;">
+    <div class="display-container" id="countdown-input-display">
+        <span id="cd-input-hour" class="display-part">00</span>:
+        <span id="cd-input-minute" class="display-part">00</span>:
+        <span id="cd-input-second" class="display-part">00</span>
+        <span id="cd-input-ms" class="display-part display-ms">000</span>
+    </div>
+    <div id="keypad" class="keypad">
+        <button class="keypad-btn">1</button><button class="keypad-btn">2</button><button class="keypad-btn">3</button>
+        <button class="keypad-btn">4</button><button class="keypad-btn">5</button><button class="keypad-btn">6</button>
+        <button class="keypad-btn">7</button><button class="keypad-btn">8</button><button class="keypad-btn">9</button>
+        <button class="keypad-btn">0</button>
+    </div>
+    <div class="button-row">
+        <button id="cd-set" class="btn green">Set</button>
+        <button id="cd-input-clear" class="btn red">Clear</button>
+    </div>
+    <button id="cd-input-back" class="btn back-btn">Back</button>
+</div>
+
+<div id="countdown-screen" class="screen-container" style="display: none;">
+    <div class="display-container">
+        <span id="cd-hour" class="display-part">00</span>:
+        <span id="cd-minute" class="display-part">00</span>:
+        <span id="cd-second" class="display-part">00</span>
+        <span id="cd-ms" class="display-part display-ms">000</span>
+    </div>
+    <div class="button-row">
+        <button id="cd-start" class="btn green">Start</button>
+        <button id="cd-reset" class="btn red">Clear</button>
+    </div>
+    <button id="cd-back" class="btn back-btn">Back</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
