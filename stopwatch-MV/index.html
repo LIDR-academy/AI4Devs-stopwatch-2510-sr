@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>00:00:00</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="language-selector">
+            <select id="language">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="pt">Português</option>
+            </select>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab-button active" data-tab="stopwatch">Stopwatch</button>
+            <button class="tab-button" data-tab="countdown">Countdown</button>
+        </div>
+        
+        <div class="tab-content">
+            <!-- Stopwatch Tab -->
+            <div id="stopwatch" class="tab-pane active">
+                <div class="time-display">
+                    <span id="stopwatch-time">00:00:00</span>
+                    <span id="stopwatch-millis" class="milliseconds">000</span>
+                </div>
+                
+                <div class="buttons">
+                    <button id="start-stopwatch" class="btn start">Start</button>
+                    <button id="lap-stopwatch" class="btn lap">Lap</button>
+                    <button id="reset-stopwatch" class="btn reset">Reset</button>
+                </div>
+                
+                <div class="laps-container">
+                    <h3 id="laps-title">Laps</h3>
+                    <ul id="laps-list" class="laps-list"></ul>
+                </div>
+            </div>
+            
+            <!-- Countdown Tab -->
+            <div id="countdown" class="tab-pane">
+                <div class="time-display">
+                    <span id="countdown-time">00:00:00</span>
+                    <span id="countdown-millis" class="milliseconds">000</span>
+                </div>
+                
+                <div class="time-input">
+                    <div class="input-group">
+                        <label for="hours-input">Hours</label>
+                        <input type="number" id="hours-input" min="0" max="23" value="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="minutes-input">Minutes</label>
+                        <input type="number" id="minutes-input" min="0" max="59" value="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="seconds-input">Seconds</label>
+                        <input type="number" id="seconds-input" min="0" max="59" value="0">
+                    </div>
+                </div>
+                
+                <div class="buttons">
+                    <button id="start-countdown" class="btn start">Start</button>
+                    <button id="reset-countdown" class="btn reset">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="alarm-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==" type="audio/wav">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
