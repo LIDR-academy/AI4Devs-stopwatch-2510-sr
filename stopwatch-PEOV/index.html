@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cronómetro & Cuenta Atrás</title>
+  <!-- Tailwind vía CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Ajustes pequeños para que el display se parezca al ejemplo */
+    .timer-display {
+      background: #e6e9ff;
+      border: 4px solid #3b3b3b;
+      border-radius: 1.5rem;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .timer-numbers {
+      letter-spacing: .1rem;
+    }
+    .time-ms {
+      font-size: 1.25rem;
+      align-self: flex-end;
+      line-height: 1;
+      margin-left: .5rem;
+    }
+    .big-button {
+      min-height: 4rem;
+      font-size: 1.5rem;
+      border-width: 3px;
+    }
+    @media (min-width: 768px) {
+      .big-button {
+        min-height: 5rem;
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-100 text-slate-900 flex flex-col">
+  <header class="bg-slate-900 text-white py-4 shadow-md">
+    <div class="max-w-4xl mx-auto px-4 flex justify-between items-center gap-4">
+      <div>
+        <h1 class="text-xl md:text-2xl font-semibold">Cronómetro & Cuenta Atrás</h1>
+        <p class="text-sm text-slate-200">Pequeña demo en HTML + JS puro, sin frameworks.</p>
+      </div>
+      <span class="text-xs md:text-sm bg-slate-700 px-3 py-1 rounded-full">Demo</span>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-6 space-y-6">
+    <!-- HOME -->
+    <section id="view-home" class="space-y-6">
+      <p class="text-slate-700">Elige qué quieres hacer:</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <button id="btn-go-stopwatch" class="flex flex-col items-center gap-3 bg-white rounded-2xl shadow border hover:shadow-lg transition p-6 cursor-pointer">
+          <span class="text-lg font-medium">Cronómetro</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4" />
+          </svg>
+          <p class="text-sm text-slate-500 text-center">Cuenta hacia arriba desde 00:00:00.</p>
+        </button>
+        <button id="btn-go-countdown" class="flex flex-col items-center gap-3 bg-white rounded-2xl shadow border hover:shadow-lg transition p-6 cursor-pointer">
+          <span class="text-lg font-medium">Cuenta atrás</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 20V4m8 8H4" />
+          </svg>
+          <p class="text-sm text-slate-500 text-center">Introduce un tiempo y cuenta hacia atrás.</p>
+        </button>
+      </div>
+    </section>
+
+    <!-- STOPWATCH -->
+    <section id="view-stopwatch" class="space-y-6 hidden">
+      <button data-go-home class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700">
+        ← Volver atrás
+      </button>
+      <div class="timer-display flex justify-between items-center gap-2 px-6 py-6">
+        <div class="flex items-end gap-2">
+          <span id="sw-time" class="timer-numbers text-4xl md:text-6xl font-bold tracking-tight">00:00:00</span>
+          <span id="sw-ms" class="time-ms">000</span>
+        </div>
+        <span class="text-xs text-slate-400">Cronómetro</span>
+      </div>
+      <div class="flex flex-col md:flex-row gap-4">
+        <button id="sw-start" class="big-button flex-1 bg-green-400 hover:bg-green-500 text-black rounded-2xl border-green-500 font-medium shadow">
+          Iniciar
+        </button>
+        <button id="sw-reset" class="big-button flex-1 bg-red-400 hover:bg-red-500 text-black rounded-2xl border-red-500 font-medium shadow">
+          Reiniciar
+        </button>
+      </div>
+      <p class="text-sm text-slate-500">Máximo: 99:99:99. Incluye milisegundos.</p>
+    </section>
+
+    <!-- COUNTDOWN -->
+    <section id="view-countdown" class="space-y-6 hidden">
+      <button data-go-home class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700">
+        ← Volver atrás
+      </button>
+      <div class="timer-display flex justify-between items-center gap-2 px-6 py-6">
+        <div class="flex items-end gap-2">
+          <span id="cd-time" class="timer-numbers text-4xl md:text-6xl font-bold tracking-tight">00:00:00</span>
+          <span id="cd-ms" class="time-ms">000</span>
+        </div>
+        <span class="text-xs text-slate-400">Cuenta atrás</span>
+      </div>
+
+      <!-- Zona de setup del teclado -->
+      <div id="cd-setup" class="space-y-4">
+        <p class="text-sm text-slate-600">Introduce el tiempo (HHMMSS). Máx. 6 dígitos. Ej: 90s = <code>000090</code>.</p>
+        <div class="grid grid-cols-6 gap-3">
+          <button data-digit="5" class="big-button bg-green-300 rounded-xl shadow border border-green-500">5</button>
+          <button data-digit="6" class="big-button bg-green-300 rounded-xl shadow border border-green-500">6</button>
+          <button data-digit="7" class="big-button bg-green-300 rounded-xl shadow border border-green-500">7</button>
+          <button data-digit="8" class="big-button bg-green-300 rounded-xl shadow border border-green-500">8</button>
+          <button data-digit="9" class="big-button bg-green-300 rounded-xl shadow border border-green-500">9</button>
+          <button id="cd-set" class="big-button bg-green-500 text-black rounded-xl shadow border border-green-600 font-medium">Asignar</button>
+
+          <button data-digit="0" class="big-button bg-green-300 rounded-xl shadow border border-green-500">0</button>
+          <button data-digit="1" class="big-button bg-green-300 rounded-xl shadow border border-green-500">1</button>
+          <button data-digit="2" class="big-button bg-green-300 rounded-xl shadow border border-green-500">2</button>
+          <button data-digit="3" class="big-button bg-green-300 rounded-xl shadow border border-green-500">3</button>
+          <button data-digit="4" class="big-button bg-green-300 rounded-xl shadow border border-green-500">4</button>
+          <button id="cd-clear-input" class="big-button bg-slate-300 text-black rounded-xl shadow border border-slate-400 font-medium">Borrar</button>
+        </div>
+      </div>
+
+      <!-- Zona de ejecución (oculta hasta que se asigne tiempo) -->
+      <div id="cd-run" class="flex flex-col md:flex-row gap-4 hidden">
+        <button id="cd-start" class="big-button flex-1 bg-green-400 hover:bg-green-500 text-black rounded-2xl border-green-500 font-medium shadow">
+          Iniciar
+        </button>
+        <button id="cd-reset" class="big-button flex-1 bg-red-400 hover:bg-red-500 text-black rounded-2xl border-red-500 font-medium shadow">
+          Reiniciar
+        </button>
+      </div>
+      <p class="text-sm text-slate-500">La cuenta atrás vuelve al tiempo asignado cuando pulsas <strong>Reiniciar</strong>.</p>
+    </section>
+  </main>
+
+  <footer class="text-center py-4 text-xs text-slate-400">
+    Ejemplo educativo · HTML + Tailwind CDN + JS puro
+  </footer>
+
+  <script src="./script.js"></script>
+</body>
+</html>
