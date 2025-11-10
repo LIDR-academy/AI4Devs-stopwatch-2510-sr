@@ -202,3 +202,41 @@ function clearCountdown(inputs, updateDisplayCB, updateButtonCB) {
     updateDisplayCB("00:08:00");
     updateButtonCB(false);
 }
+
+// === EXPORTS PARA TESTING ===
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        formatTime,
+        normalizeCountdownInputs,
+        startStopStopwatch,
+        clearStopwatch,
+        startStopCountdown,
+        clearCountdown,
+        // Exponemos el estado para poder resetearlo en los tests
+        __setState: (type, newState) => {
+            if (type === 'stopwatch') {
+                stopwatchState = { ...newState };
+            } else if (type === 'countdown') {
+                countdownState = { ...newState };
+            }
+        },
+        __getInitialState: (type) => {
+            if (type === 'stopwatch') {
+                return {
+                    startTime: 0,
+                    elapsedTime: 0,
+                    intervalId: null,
+                    isRunning: false
+                };
+            }
+            if (type === 'countdown') {
+                return {
+                    targetTime: 0,
+                    endTime: 0,
+                    intervalId: null,
+                    isRunning: false
+                };
+            }
+        }
+    };
+}
