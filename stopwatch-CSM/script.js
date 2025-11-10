@@ -177,7 +177,7 @@ class Stopwatch {
   clearLaps() {
     this.laps = [];
     this.lapCounter = 1;
-    this.lastLapTime = 0;
+    this.lastLapTime = this.elapsedTime;
     this.lapTimesContainer.innerHTML = '<div class="no-laps">No laps recorded yet</div>';
 
     // Optionally hide the lap section when cleared
