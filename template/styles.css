@@ -1,0 +1,533 @@
+/* ===================================================================
+   VARIABLES CSS GLOBALES
+   Define colores, tamaños y valores reutilizables para mantener
+   consistencia visual en toda la aplicación
+   =================================================================== */
+:root {
+    /* Paleta de colores principal basada en la imagen de referencia */
+    --color-background: #e8ecf5;          /* Fondo azul claro/lavanda */
+    --color-display-bg: #f0f3f8;          /* Fondo del display */
+    --color-display-border: #2d3748;      /* Borde del display */
+    --color-text-primary: #1a202c;        /* Texto principal */
+    --color-text-secondary: #4a5568;      /* Texto secundario */
+    
+    /* Colores de los botones */
+    --color-start-btn: #48bb78;           /* Verde para Start */
+    --color-start-btn-hover: #38a169;     /* Verde oscuro al pasar mouse */
+    --color-clear-btn: #f56565;           /* Rojo para Clear */
+    --color-clear-btn-hover: #e53e3e;     /* Rojo oscuro al pasar mouse */
+    --color-pause-btn: #ed8936;           /* Naranja para Pause */
+    --color-pause-btn-hover: #dd6b20;     /* Naranja oscuro */
+    
+    /* Colores de modo */
+    --color-mode-active: #4299e1;         /* Azul para modo activo */
+    --color-mode-inactive: #cbd5e0;       /* Gris para modo inactivo */
+    
+    /* Tamaños y espaciado */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    
+    /* Tipografía */
+    --font-family-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-family-mono: 'Courier New', Courier, monospace;
+    
+    /* Bordes y sombras */
+    --border-radius-sm: 0.5rem;
+    --border-radius-md: 1rem;
+    --border-radius-lg: 1.5rem;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --box-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* ===================================================================
+   RESET Y ESTILOS BASE
+   Normaliza comportamientos del navegador y establece valores base
+   =================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family-main);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-md);
+    color: var(--color-text-primary);
+}
+
+/* ===================================================================
+   CONTENEDOR PRINCIPAL
+   Define el layout principal de la aplicación
+   =================================================================== */
+.app-container {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-lg);
+    max-width: 900px;
+    width: 100%;
+    overflow: hidden;
+    animation: fadeIn 0.5s ease-in;
+}
+
+/* Animación de entrada suave */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===================================================================
+   ENCABEZADO
+   Contiene el título y selector de modo
+   =================================================================== */
+.app-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: var(--spacing-lg);
+    text-align: center;
+}
+
+.app-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ===================================================================
+   SELECTOR DE MODO
+   Permite cambiar entre cronómetro y cuenta atrás
+   =================================================================== */
+.mode-selector {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+.mode-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.mode-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.mode-btn.active {
+    background: white;
+    color: #667eea;
+    border-color: white;
+}
+
+/* ===================================================================
+   PANEL PRINCIPAL DEL TEMPORIZADOR
+   Contiene todos los elementos interactivos
+   =================================================================== */
+.timer-panel {
+    padding: var(--spacing-xl);
+    background: var(--color-background);
+}
+
+/* ===================================================================
+   CONFIGURACIÓN DE CUENTA ATRÁS
+   Inputs para establecer el tiempo inicial
+   =================================================================== */
+.countdown-config {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--box-shadow);
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+        margin-bottom: 0;
+        padding: 0;
+    }
+    to {
+        opacity: 1;
+        max-height: 200px;
+        margin-bottom: var(--spacing-lg);
+        padding: var(--spacing-lg);
+    }
+}
+
+.config-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+    color: var(--color-text-primary);
+}
+
+.time-inputs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-group label {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-xs);
+    font-weight: 500;
+}
+
+.time-input {
+    width: 80px;
+    padding: var(--spacing-sm);
+    font-size: 1.5rem;
+    text-align: center;
+    border: 2px solid var(--color-mode-inactive);
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.time-input:focus {
+    outline: none;
+    border-color: var(--color-mode-active);
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+}
+
+.input-separator {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-top: 1.5rem;
+}
+
+/* ===================================================================
+   DISPLAY DEL TIEMPO
+   Muestra el tiempo con formato HH:MM:SS:mmm
+   =================================================================== */
+.display-container {
+    margin: var(--spacing-xl) 0;
+}
+
+.time-display {
+    background: var(--color-display-bg);
+    border: 4px solid var(--color-display-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl) var(--spacing-lg);
+    font-family: var(--font-family-mono);
+    font-size: 4.5rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--color-text-primary);
+    letter-spacing: 0.1em;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Efecto visual cuando el cronómetro está corriendo */
+.time-display.running {
+    border-color: var(--color-start-btn);
+    box-shadow: 0 0 20px rgba(72, 187, 120, 0.3),
+                inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Efecto visual cuando la cuenta atrás está por terminar */
+.time-display.warning {
+    border-color: var(--color-clear-btn);
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(245, 101, 101, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(245, 101, 101, 0.6);
+    }
+}
+
+.time-separator {
+    opacity: 0.7;
+    margin: 0 0.1em;
+}
+
+.time-milliseconds {
+    font-size: 2.5rem;
+    opacity: 0.8;
+    margin-left: 0.2em;
+}
+
+/* ===================================================================
+   CONTENEDOR DE CONTROLES
+   Botones principales de acción
+   =================================================================== */
+.controls-container {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+}
+
+/* ===================================================================
+   BOTONES DE CONTROL
+   Estilos para los botones Start/Pause y Clear
+   =================================================================== */
+.control-btn {
+    flex: 1;
+    max-width: 300px;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    font-size: 1.5rem;
+    font-weight: 700;
+    border: 3px solid;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: var(--box-shadow);
+}
+
+.control-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--box-shadow-lg);
+}
+
+.control-btn:active {
+    transform: translateY(-1px);
+}
+
+/* Botón Start (verde) */
+.start-btn {
+    background: var(--color-start-btn);
+    border-color: #2f855a;
+    color: white;
+}
+
+.start-btn:hover {
+    background: var(--color-start-btn-hover);
+}
+
+/* Estado cuando se convierte en Pause (naranja) */
+.start-btn.pause {
+    background: var(--color-pause-btn);
+    border-color: #c05621;
+}
+
+.start-btn.pause:hover {
+    background: var(--color-pause-btn-hover);
+}
+
+/* Botón Clear (rojo) */
+.clear-btn {
+    background: var(--color-clear-btn);
+    border-color: #c53030;
+    color: white;
+}
+
+.clear-btn:hover {
+    background: var(--color-clear-btn-hover);
+}
+
+/* ===================================================================
+   INFORMACIÓN ADICIONAL
+   Mensajes de estado y alertas
+   =================================================================== */
+.additional-info {
+    margin-top: var(--spacing-lg);
+    text-align: center;
+    animation: slideDown 0.3s ease;
+}
+
+.status-message {
+    font-size: 1.125rem;
+    font-weight: 600;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    background: rgba(66, 153, 225, 0.1);
+    color: var(--color-mode-active);
+}
+
+/* ===================================================================
+   PIE DE PÁGINA
+   Atajos de teclado y créditos
+   =================================================================== */
+.app-footer {
+    background: #f7fafc;
+    padding: var(--spacing-lg);
+    border-top: 1px solid #e2e8f0;
+}
+
+.keyboard-shortcuts {
+    margin-bottom: var(--spacing-md);
+}
+
+.shortcuts-title {
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text-secondary);
+}
+
+.shortcuts-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-md);
+    list-style: none;
+}
+
+.shortcuts-list li {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+}
+
+kbd {
+    background: var(--color-text-primary);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-family: var(--font-family-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.credits {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+}
+
+/* ===================================================================
+   CLASE UTILIDAD
+   Oculta elementos sin eliminarlos del DOM
+   =================================================================== */
+.hidden {
+    display: none !important;
+}
+
+/* ===================================================================
+   DISEÑO RESPONSIVE
+   Adaptación para diferentes tamaños de pantalla
+   =================================================================== */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 768px) {
+    .app-title {
+        font-size: 1.5rem;
+    }
+    
+    .time-display {
+        font-size: 3rem;
+        padding: var(--spacing-lg);
+    }
+    
+    .time-milliseconds {
+        font-size: 1.75rem;
+    }
+    
+    .control-btn {
+        font-size: 1.25rem;
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+    
+    .controls-container {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .control-btn {
+        max-width: 100%;
+    }
+}
+
+/* Móviles y pantallas pequeñas */
+@media (max-width: 480px) {
+    body {
+        padding: var(--spacing-sm);
+    }
+    
+    .app-title {
+        font-size: 1.25rem;
+    }
+    
+    .timer-panel {
+        padding: var(--spacing-lg);
+    }
+    
+    .time-display {
+        font-size: 2.25rem;
+        padding: var(--spacing-md);
+    }
+    
+    .time-milliseconds {
+        font-size: 1.25rem;
+    }
+    
+    .control-btn {
+        font-size: 1rem;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .time-input {
+        width: 60px;
+        font-size: 1.25rem;
+    }
+    
+    .input-separator {
+        font-size: 1.5rem;
+    }
+    
+    .shortcuts-list {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* ===================================================================
+   PREFERENCIAS DE ACCESIBILIDAD
+   Respeta las configuraciones del usuario
+   =================================================================== */
+
+/* Reducir animaciones si el usuario lo prefiere */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Modo oscuro (si el navegador lo soporta) */
+@media (prefers-color-scheme: dark) {
+    /* Estos estilos se pueden activar si se desea soporte para modo oscuro */
+    /* Por ahora se mantiene el diseño claro por defecto */
+}
