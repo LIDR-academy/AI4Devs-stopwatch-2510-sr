@@ -1,13 +1,142 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Timer and Countdown</title>
-<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cronómetro y cuenta atrás online - Herramienta precisa y fácil de usar">
+    <meta name="keywords" content="cronómetro, stopwatch, cuenta atrás, timer, countdown">
+    <meta name="author" content="AI4Devs">
+    <title>Cronómetro y Cuenta Atrás Online | AI4Devs</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<h1>Timer and Countdown</h1>
-<script src="script.js"></script>
+    <!-- Contenedor principal de la aplicación -->
+    <div class="app-container">
+        <!-- Encabezado con título y selector de modo -->
+        <header class="app-header">
+            <h1 class="app-title">Cronómetro & Cuenta Atrás</h1>
+            
+            <!-- Selector de modo: Cronómetro o Cuenta Atrás -->
+            <div class="mode-selector" role="tablist" aria-label="Selector de modo">
+                <button 
+                    id="stopwatchModeBtn" 
+                    class="mode-btn active" 
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="timer-panel">
+                    Cronómetro
+                </button>
+                <button 
+                    id="countdownModeBtn" 
+                    class="mode-btn"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="timer-panel">
+                    Cuenta Atrás
+                </button>
+            </div>
+        </header>
+
+        <!-- Panel principal del temporizador -->
+        <main class="timer-panel" id="timer-panel" role="tabpanel">
+            
+            <!-- Configuración para el modo cuenta atrás (oculto por defecto) -->
+            <div id="countdownConfig" class="countdown-config hidden">
+                <h2 class="config-title">Configurar Tiempo</h2>
+                <div class="time-inputs">
+                    <div class="input-group">
+                        <label for="hoursInput">Horas</label>
+                        <input 
+                            type="number" 
+                            id="hoursInput" 
+                            class="time-input"
+                            min="0" 
+                            max="23" 
+                            value="0"
+                            aria-label="Horas">
+                    </div>
+                    <div class="input-separator">:</div>
+                    <div class="input-group">
+                        <label for="minutesInput">Minutos</label>
+                        <input 
+                            type="number" 
+                            id="minutesInput" 
+                            class="time-input"
+                            min="0" 
+                            max="59" 
+                            value="5"
+                            aria-label="Minutos">
+                    </div>
+                    <div class="input-separator">:</div>
+                    <div class="input-group">
+                        <label for="secondsInput">Segundos</label>
+                        <input 
+                            type="number" 
+                            id="secondsInput" 
+                            class="time-input"
+                            min="0" 
+                            max="59" 
+                            value="0"
+                            aria-label="Segundos">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Display principal del tiempo -->
+            <div class="display-container">
+                <div 
+                    id="timeDisplay" 
+                    class="time-display"
+                    role="timer"
+                    aria-live="off"
+                    aria-atomic="true">
+                    <span class="time-hours">00</span>
+                    <span class="time-separator">:</span>
+                    <span class="time-minutes">00</span>
+                    <span class="time-separator">:</span>
+                    <span class="time-seconds">00</span>
+                    <span class="time-milliseconds">000</span>
+                </div>
+            </div>
+
+            <!-- Contenedor de botones de control -->
+            <div class="controls-container">
+                <button 
+                    id="startBtn" 
+                    class="control-btn start-btn"
+                    aria-label="Iniciar cronómetro">
+                    <span class="btn-text">Start</span>
+                </button>
+                <button 
+                    id="clearBtn" 
+                    class="control-btn clear-btn"
+                    aria-label="Limpiar cronómetro">
+                    <span class="btn-text">Clear</span>
+                </button>
+            </div>
+
+            <!-- Panel de información adicional (oculto por defecto) -->
+            <div id="additionalInfo" class="additional-info hidden">
+                <p id="statusMessage" class="status-message"></p>
+            </div>
+        </main>
+
+        <!-- Pie de página con información y atajos de teclado -->
+        <footer class="app-footer">
+            <div class="keyboard-shortcuts">
+                <p class="shortcuts-title">Atajos de teclado:</p>
+                <ul class="shortcuts-list">
+                    <li><kbd>Espacio</kbd> - Iniciar/Pausar</li>
+                    <li><kbd>R</kbd> - Reiniciar</li>
+                    <li><kbd>C</kbd> - Limpiar</li>
+                    <li><kbd>M</kbd> - Cambiar modo</li>
+                </ul>
+            </div>
+            <p class="credits">Desarrollado con ❤️ por AI4Devs | © 2024</p>
+        </footer>
+    </div>
+
+    <!-- Script principal de la aplicación -->
+    <script src="script.js"></script>
 </body>
 </html>
