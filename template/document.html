@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Documentación del Web Timer</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #333;
+        }
+        h1, h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: "Courier New", Courier, monospace;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .example {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Documentación del Componente Web Timer</h1>
+    <p>
+        Este documento explica cómo incrustar y configurar el componente Web Timer en cualquier otra página web.
+    </p>
+
+    <h2>Uso Básico (Iframe)</h2>
+    <p>
+        La forma más sencilla de usar el componente es a través de una etiqueta <code>&lt;iframe&gt;</code>. 
+        Apunta el atributo <code>src</code> a la URL donde tengas alojado el <code>index.html</code>.
+    </p>
+    <pre>
+&lt;!-- Ajusta 'width' y 'height' según tus necesidades --&gt;
+&lt;iframe 
+    src="URL_DEL_COMPONENTE/index.html" 
+    width="430" 
+    height="280" 
+    frameborder="0"
+    title="Web Timer Component"&gt;
+&lt;/iframe&gt;
+    </pre>
+
+    <h2>Modos de Visualización</h2>
+    <p>
+        El componente puede cargarse en tres modos diferentes utilizando parámetros en la URL (query strings).
+    </p>
+
+    <h3>1. Modo "Ambos" (por defecto)</h3>
+    <p>
+        Muestra ambas funcionalidades (Stopwatch y Countdown) con pestañas para que el usuario elija.
+    </p>
+    <ul>
+        <li><b>Parámetro:</b> Ninguno, o <code>?mode=both</code></li>
+        <li><b>Ejemplo de Iframe:</b></li>
+    </ul>
+    <pre>&lt;iframe src="URL_DEL_COMPONENTE/index.html?mode=both"&gt;&lt;/iframe&gt;</pre>
+    <div class="example">
+        <iframe src="index.html?mode=both" width="430" height="280" frameborder="0"></iframe>
+    </div>
+
+
+    <h3>2. Modo "Stopwatch" (Solo cronómetro)</h3>
+    <p>
+        Muestra únicamente el cronómetro, sin pestañas ni la opción de cuenta atrás.
+    </p>
+    <ul>
+        <li><b>Parámetro:</b> <code>?mode=stopwatch</code></li>
+        <li><b>Ejemplo de Iframe:</b></li>
+    </ul>
+    <pre>&lt;iframe src="URL_DEL_COMPONENTE/index.html?mode=stopwatch"&gt;&lt;/iframe&gt;</pre>
+    <div class="example">
+        <iframe src="index.html?mode=stopwatch" width="430" height="210" frameborder="0"></iframe>
+    </div>
+
+
+    <h3>3. Modo "Countdown" (Solo cuenta atrás)</h3>
+    <p>
+        Muestra únicamente la cuenta atrás, sin pestañas ni el cronómetro.
+    </p>
+    <ul>
+        <li><b>Parámetro:</b> <code>?mode=countdown</code></li>
+        <li><b>Ejemplo de Iframe:</b></li>
+    </ul>
+    <pre>&lt;iframe src="URL_DEL_COMPONENTE/index.html?mode=countdown"&gt;&lt;/iframe&gt;</pre>
+    <div class="example">
+        <iframe src="index.html?mode=countdown" width="430" height="260" frameborder="0"></iframe>
+    </div>
+
+</body>
+</html>
