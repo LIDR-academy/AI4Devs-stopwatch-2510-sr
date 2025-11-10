@@ -173,3 +173,7 @@ Once I have your answers, I’ll generate index.html and script.js exactly as re
 # Prompt 3 (responding to prompt 2 questions)
 
 1) Yes. 2) Full-width components that scale to the viewport on smaller screens? 3) Yes.
+
+# Prompt 4 (plus attached screenshot of how it looked)
+
+The stopwatch watch milliseconds location under seconds layout causes the seconds to not be aligned with the minutes beside it.  See attached screenshot. Can you make it so the HH:MM:SS are fully aligned and the miliseconds small font is located under SS?

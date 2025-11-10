@@ -42,17 +42,19 @@
             :
           </span>
 
-          <!-- Seconds + milliseconds stacked -->
-          <span class="flex flex-col items-center">
+          <!-- Seconds with milliseconds absolutely positioned underneath -->
+          <span class="relative inline-block">
+            <!-- SS (aligned with HH and MM) -->
             <span
               id="seconds"
-              class="text-5xl sm:text-7xl md:text-8xl font-semibold leading-none tabular-nums"
+              class="block text-5xl sm:text-7xl md:text-8xl font-semibold leading-none tabular-nums"
             >
               00
             </span>
+            <!-- mmm (does NOT affect baseline height) -->
             <span
               id="milliseconds"
-              class="text-xl sm:text-2xl md:text-3xl font-semibold leading-tight tabular-nums"
+              class="absolute left-1/2 -translate-x-1/2 top-full mt-1 text-xl sm:text-2xl md:text-3xl font-semibold leading-tight tabular-nums"
             >
               000
             </span>
