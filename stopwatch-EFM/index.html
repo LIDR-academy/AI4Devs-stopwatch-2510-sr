@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer and Countdown</title>
+    <style>
+        /* CSS for the Timer and Countdown app */
+
+        :root {
+            --color-primary: #1e88e5; /* Blue for primary accents */
+            --color-success: #43a047; /* Green for start/continue */
+            --color-danger: #e53935; /* Red for clear */
+            --color-warning: #ffa000; /* Orange for set/edit */
+            --color-bg-light: #f5f5f5;
+            --color-text-dark: #212121;
+            --color-text-light: #ffffff;
+            --font-display: 'Roboto Mono', monospace;
+            --font-body: 'Roboto', sans-serif;
+        }
+
+        /* Basic Reset and Setup */
+        body {
+            font-family: var(--font-body);
+            color: var(--color-text-dark);
+            background-color: var(--color-bg-light);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--color-primary);
+            margin-top: 0;
+            font-weight: 300;
+        }
+
+        /* Utility classes using BEM naming */
+
+        .app-screen {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .app-screen--active {
+            display: flex;
+        }
+
+        /* Header / State Title */
+        .header__title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: var(--color-text-dark);
+            min-height: 1.5rem; /* Reserve space */
+        }
+
+        /* Display Panel */
+        .display-panel {
+            background-color: #e3f2fd; /* Light Blue background */
+            border-radius: 8px;
+            padding: 20px 10px;
+            margin-bottom: 20px;
+            border: 1px solid #bbdefb;
+            position: relative;
+        }
+
+        .display-panel__time {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            font-weight: 700;
+            letter-spacing: -2px;
+            color: var(--color-text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+            min-height: 4rem;
+        }
+
+        .display-panel__time-ms {
+            font-size: 0.5em;
+            font-weight: 400;
+            opacity: 0.7;
+            margin-left: -5px; /* Pull milliseconds closer */
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .button {
+            flex-grow: 1;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, box-shadow 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-width: 100px;
+        }
+
+        .button:focus-visible {
+            outline: 3px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        .button:active {
+            transform: scale(0.98);
+        }
+
+        .button--start-continue {
+            background-color: var(--color-success);
+            color: var(--color-text-light);
+            box-shadow: 0 4px 0 var(--color-success)d9;
+        }
+
+        .button--pause {
+            background-color: var(--color-warning);
+            color: var(--color-text-dark);
+            box-shadow: 0 4px 0 var(--color-warning)d9;
+        }
+        
+        .button--danger {
+            background-color: var(--color-danger);
+            color: var(--color-text-light);
+            box-shadow: 0 4px 0 var(--color-danger)d9;
+        }
+
+        .button--primary {
+            background-color: var(--color-primary);
+            color: var(--color-text-light);
+            box-shadow: 0 4px 0 var(--color-primary)d9;
+        }
+
+        .button--secondary {
+            background-color: #bdbdbd; /* Gray */
+            color: var(--color-text-dark);
+            box-shadow: 0 4px 0 #9e9e9e;
+        }
+
+        /* Mode Selection Screen */
+        .mode-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .mode-selector__option {
+            background-color: var(--color-bg-light);
+            border: 2px solid var(--color-primary);
+            color: var(--color-text-dark);
+            padding: 30px;
+            border-radius: 8px;
+            transition: background-color 0.2s, transform 0.2s;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .mode-selector__option:hover,
+        .mode-selector__option:focus {
+            background-color: #e3f2fd;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .mode-selector__icon {
+            display: block;
+            margin: 10px auto;
+            width: 40px;
+            height: 40px;
+        }
+
+        /* Countdown Input Configuration */
+        .countdown-config__input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .countdown-config__input {
+            flex-grow: 1;
+            padding: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 2px solid var(--color-primary);
+            border-radius: 4px;
+            max-width: 100px;
+        }
+
+        .countdown-config__label {
+            display: block;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        /* Back Button Bar */
+        .back-bar {
+            background-color: var(--color-primary);
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            padding: 10px 0;
+            display: none; /* Hidden by default */
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-bar--visible {
+            display: block;
+        }
+
+        .button--back {
+            background: none;
+            color: var(--color-text-light);
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 10px 20px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .button--back:focus-visible {
+            outline: 3px solid var(--color-warning);
+            outline-offset: 2px;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 480px) {
+            .app-container {
+                padding: 15px;
+                margin-top: 10px;
+                border-radius: 0; /* Full width/no padding on very small screens */
+                box-shadow: none;
+            }
+
+            .display-panel__time {
+                font-size: 3rem;
+            }
+
+            .button {
+                padding: 12px 15px;
+                font-size: 1rem;
+            }
+
+            .button-group {
+                gap: 8px;
+            }
+
+            .countdown-config__input {
+                font-size: 1rem;
+                padding: 8px;
+                max-width: 80px;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <h1>Timer and Countdown</h1>
+
+        <div id="state-title" class="header__title">Choose mode</div>
+
+        <div class="display-panel" role="timer" aria-live="polite">
+            <span id="timer-display" class="display-panel__time">00:00:00<span id="timer-display-ms" class="display-panel__time-ms">.000</span></span>
+        </div>
+
+
+        <div id="mode-select-screen" class="app-screen app-screen--active">
+            <div class="mode-selector">
+                <button class="mode-selector__option" data-mode="stopwatch" aria-label="Select Stopwatch mode">
+                    <svg class="mode-selector__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                        <path d="M12 12L12 16"></path>
+                    </svg>
+                    Stopwatch
+                </button>
+                <button class="mode-selector__option" data-mode="countdown" aria-label="Select Countdown mode">
+                    <svg class="mode-selector__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13l2-2 2 2 2-2 2 2"></path>
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    Countdown
+                </button>
+            </div>
+        </div>
+
+        <div id="stopwatch-screen" class="app-screen">
+            <div id="stopwatch-controls" class="button-group">
+                </div>
+        </div>
+
+        <div id="countdown-config-screen" class="app-screen">
+            <form id="countdown-config-form" class="countdown-config__input-group">
+                <div>
+                    <input type="number" id="input-hours" class="countdown-config__input" value="0" min="0" max="99" required aria-label="Hours input for countdown">
+                    <label for="input-hours" class="countdown-config__label">Hours</label>
+                </div>
+                <div>
+                    <input type="number" id="input-minutes" class="countdown-config__input" value="1" min="0" max="99" required aria-label="Minutes input for countdown">
+                    <label for="input-minutes" class="countdown-config__label">Minutes</label>
+                </div>
+                <div>
+                    <input type="number" id="input-seconds" class="countdown-config__input" value="30" min="0" max="99" required aria-label="Seconds input for countdown">
+                    <label for="input-seconds" class="countdown-config__label">Seconds</label>
+                </div>
+                <button type="submit" class="button button--warning" aria-label="Set Countdown Timer">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5l4 4L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                    Set
+                </button>
+            </form>
+        </div>
+
+        <div id="countdown-run-screen" class="app-screen">
+            <div id="countdown-controls" class="button-group">
+                </div>
+        </div>
+    </div>
+
+    <div id="back-bar" class="back-bar">
+        <button id="back-button" class="button--back" aria-label="Go back to mode selection">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            Back
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
