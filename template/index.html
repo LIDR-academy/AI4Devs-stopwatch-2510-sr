@@ -1,13 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Timer and Countdown</title>
-<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stopwatch & Countdown</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #f8f9ff;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+        }
+
+        .tab-buttons {
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-buttons button {
+            padding: 0.5rem 1.5rem;
+            margin: 0 0.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #ddd;
+        }
+
+        .tab-buttons .active {
+            background: #6ea8fe;
+            color: white;
+        }
+
+        .timer-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .display {
+            font-size: 3rem;
+            background-color: #e8ecff;
+            padding: 1rem 2rem;
+            border: 4px solid #333;
+            border-radius: 20px;
+            width: fit-content;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            min-width: 340px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        button.start {
+            background-color: #4cff4c;
+            border: 2px solid #333;
+            color: black;
+            font-size: 1.2rem;
+            padding: 0.7rem 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        button.clear {
+            background-color: #ff4c4c;
+            border: 2px solid #333;
+            color: black;
+            font-size: 1.2rem;
+            padding: 0.7rem 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .time-inputs input {
+            width: 70px;
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 0.2rem;
+            border-radius: 10px;
+            border: 2px solid #ccc;
+            padding: 0.3rem;
+        }
+    </style>
 </head>
+
 <body>
-<h1>Timer and Countdown</h1>
-<script src="script.js"></script>
+    <h1>Stopwatch & Countdown</h1>
+
+    <div class="tab-buttons">
+        <button id="showStopwatch" class="active">Stopwatch</button>
+        <button id="showCountdown">Countdown</button>
+    </div>
+
+    <!-- Stopwatch Section -->
+    <section id="stopwatch" class="timer-section">
+        <div class="display" id="stopwatchDisplay">00:00:00:000</div>
+        <div class="controls">
+            <button id="startStopwatch" class="start">Start</button>
+            <button id="resetStopwatch" class="clear">Clear</button>
+        </div>
+    </section>
+
+    <!-- Countdown Section -->
+    <section id="countdown" class="timer-section hidden">
+        <div class="time-inputs">
+            <input type="number" id="hours" placeholder="HH" min="0" max="99" />
+            <input type="number" id="minutes" placeholder="MM" min="0" max="59" />
+            <input type="number" id="seconds" placeholder="SS" min="0" max="59" />
+        </div>
+        <div class="display" id="countdownDisplay">00:00:00</div>
+        <div class="controls">
+            <button id="startCountdown" class="start">Start</button>
+            <button id="resetCountdown" class="clear">Clear</button>
+        </div>
+        <audio id="beep">
+            <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
+        </audio>
+    </section>
+
+    <script src="script.js"></script>
 </body>
+
 </html>
