@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timer and Countdown</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Timer and Countdown</h1>
+        
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('timer')">Cronómetro</button>
+            <button class="tab-button" onclick="switchTab('countdown')">Cuenta Atrás</button>
+        </div>
+
+        <!-- CRONÓMETRO -->
+        <div id="timer" class="tab-content active">
+            <div class="display">
+                <div class="time-display">
+                    <span id="timer-hours">00</span>:<span id="timer-minutes">00</span>:<span id="timer-seconds">00</span><span class="milliseconds">:<span id="timer-milliseconds">000</span></span>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn btn-start" onclick="startTimer()">Start</button>
+                <button class="btn btn-clear" onclick="clearTimer()">Clear</button>
+            </div>
+        </div>
+
+        <!-- CUENTA ATRÁS -->
+        <div id="countdown" class="tab-content">
+            <div class="time-inputs">
+                <div class="input-group">
+                    <label>Horas</label>
+                    <input type="number" id="input-hours" min="0" max="23" value="0">
+                </div>
+                <div class="input-group">
+                    <label>Minutos</label>
+                    <input type="number" id="input-minutes" min="0" max="59" value="0">
+                </div>
+                <div class="input-group">
+                    <label>Segundos</label>
+                    <input type="number" id="input-seconds" min="0" max="59" value="0">
+                </div>
+            </div>
+            <div class="display">
+                <div class="time-display">
+                    <span id="countdown-hours">00</span>:<span id="countdown-minutes">00</span>:<span id="countdown-seconds">00</span><span class="milliseconds">:<span id="countdown-milliseconds">000</span></span>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn btn-set" onclick="setCountdown()">Establecer</button>
+                <button class="btn btn-start" onclick="startCountdown()">Start</button>
+                <button class="btn btn-clear" onclick="clearCountdown()">Clear</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
