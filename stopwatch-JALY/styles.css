@@ -1,0 +1,72 @@
+:root{
+  --panel:#e9eefc;
+  --text:#0b0b0c;
+  --primary:#20d561;
+  --primary-dark:#10b152;
+  --danger:#ff2a2a;
+  --danger-dark:#d61e1e;
+  --accent:#2ea8ff;
+  --muted:#c9cacc;
+  --muted-dark:#b1b3b6;
+  --shadow:0 6px 22px rgba(0,0,0,.12);
+}
+
+*{box-sizing:border-box;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;}
+html,body{height:100%;}
+body{margin:0;background:#fff;color:var(--text);display:flex;align-items:center;justify-content:center;padding:18px;}
+.app{width:min(980px,95vw);}
+
+/* FIRST SCREEN tiles (only arrows) */
+.mode-picker{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
+.mode{
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid #e5e7eb;border-radius:16px;padding:20px 12px;
+  background:#f3f4f6;cursor:pointer;box-shadow:var(--shadow);
+  min-height:160px; transition:transform .15s ease;
+}
+.mode img{width:120px;height:120px;pointer-events:none;user-select:none;}
+.mode:active{transform:translateY(1px);}
+
+.hidden{display:none !important;}
+
+/* Big rounded timer like the reference */
+.timer-display{
+  margin-top:6px; background:var(--panel);
+  border:6px solid #2f2f33; border-radius:26px;
+  padding:24px 28px; text-align:right; font-variant-numeric:tabular-nums;
+  box-shadow:var(--shadow);
+}
+.timer-display span{font-size:120px;line-height:1;font-weight:800;letter-spacing:2px;}
+.timer-display small{font-size:28px;vertical-align:top;margin-left:10px;font-weight:800;}
+
+/* Controls */
+.controls{display:flex;gap:32px;justify-content:center;margin-top:22px;}
+.controls button,
+.keypad .keys > button{
+  border:4px solid #222;border-radius:20px;
+  padding:18px 36px;font-size:40px;font-weight:700;cursor:pointer;box-shadow:var(--shadow);
+}
+.primary{background:var(--primary);color:#000;}
+.primary:hover{background:var(--primary-dark);}
+.danger{background:var(--danger);color:#000;}
+.danger:hover{background:var(--danger-dark);}
+.accent{background:var(--accent);color:#001b2e;}
+.muted{background:var(--muted);color:#000;}
+.muted:hover{background:var(--muted-dark);}
+.key{background:var(--primary);}
+
+/* Keypad grid exactly like the screenshot */
+.keypad{margin-top:18px;}
+.keypad .keys{
+  display:grid;grid-template-columns: repeat(6, 1fr); gap:14px;
+}
+
+/* Alarm blinking */
+.alarm{ animation: tilt 1s infinite alternate both; }
+@keyframes tilt{ 0%{background:#f3f4f6;} 100%{background:#fca5a5;} }
+
+@media (max-width:700px){
+  .timer-display span{font-size:76px;}
+  .timer-display small{font-size:22px;}
+  .controls button{font-size:28px;padding:14px 22px;}
+}

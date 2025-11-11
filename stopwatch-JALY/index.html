@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stopwatch & Countdown</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <!-- FIRST SCREEN: only these two tiles are visible -->
+    <section class="mode-picker">
+      <button id="modeStopwatch" class="mode" aria-label="Stopwatch">
+        <img src="arrow-up.svg" alt="" />
+      </button>
+      <button id="modeCountdown" class="mode" aria-label="Countdown">
+        <img src="arrow-down.svg" alt="" />
+      </button>
+    </section>
+
+    <!-- Timer display (hidden until a mode is chosen) -->
+    <section id="display" class="timer-display hidden" aria-live="polite" aria-atomic="true">
+      <span id="hh">00</span>:<span id="mm">00</span>:<span id="ss">00</span>
+      <small id="ms">000</small>
+    </section>
+
+    <!-- Keypad (countdown only, before Set) -->
+    <section id="keypad" class="keypad hidden" aria-label="Countdown keypad">
+      <div class="keys">
+        <button class="key" data-digit="5">5</button>
+        <button class="key" data-digit="6">6</button>
+        <button class="key" data-digit="7">7</button>
+        <button class="key" data-digit="8">8</button>
+        <button class="key" data-digit="9">9</button>
+        <button id="setBtn" class="accent">Set</button>
+
+        <button class="key" data-digit="0">0</button>
+        <button class="key" data-digit="1">1</button>
+        <button class="key" data-digit="2">2</button>
+        <button class="key" data-digit="3">3</button>
+        <button class="key" data-digit="4">4</button>
+        <button id="keypadClearBtn" class="muted">Clear</button>
+      </div>
+    </section>
+
+    <!-- Controls (Stopwatch and post-Set Countdown) -->
+    <section id="controls" class="controls hidden">
+      <button id="startPauseBtn" class="primary">Start</button>
+      <button id="clearBtn" class="danger">Clear</button>
+    </section>
+
+    <!-- Alarm sound -->
+    <audio id="alarmAudio" preload="auto">
+      <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
+      <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock_short.ogg" type="audio/ogg">
+    </audio>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
