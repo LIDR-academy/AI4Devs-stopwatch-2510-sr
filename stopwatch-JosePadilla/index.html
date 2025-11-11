@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cronómetro y Cuenta Regresiva — estilo pastel</title>
+
+  <!-- CSS: diseño limpio, centrado, tonos pasteles -->
+  <style>
+    :root{
+      --bg: #f7f8fb;
+      --card: #ffffff;
+      --accent: #b8d8d8;
+      --accent-2: #ffd3c2;
+      --text: #243240;
+      --muted: #7a8794;
+      --shadow: 0 6px 18px rgba(36,50,64,0.06);
+      --radius: 14px;
+      --big: 3.6rem;
+      --medium: 1.2rem;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, #f3f7fb 0%, var(--bg) 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+      box-sizing:border-box;
+    }
+
+    .card{
+      width:100%;
+      max-width:520px;
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:28px;
+      text-align:center;
+    }
+
+    h1{
+      margin:0 0 8px 0;
+      font-size:1.25rem;
+      letter-spacing:0.2px;
+    }
+    p.lead{
+      margin:0 0 18px 0;
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+
+    /* Toggle buttons top */
+    .modes{
+      display:flex;
+      gap:8px;
+      justify-content:center;
+      margin-bottom:18px;
+    }
+    .mode-btn{
+      border:0;
+      background:transparent;
+      padding:8px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      transition:all .18s ease;
+      color:var(--muted);
+    }
+    .mode-btn.active{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#184048;
+      transform:translateY(-3px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+    }
+
+    /* Display */
+    .display{
+      margin:14px 0 20px 0;
+      background:linear-gradient(180deg, rgba(0,0,0,0.02), transparent);
+      border-radius:12px;
+      padding:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      min-height:120px;
+    }
+
+    .time{
+      font-size:var(--big);
+      font-weight:700;
+      letter-spacing:2px;
+      display:flex;
+      gap:6px;
+      align-items:baseline;
+      transition:transform .18s ease, opacity .18s ease;
+    }
+
+    .time .segment{
+      background:rgba(255,255,255,0.6);
+      padding:10px 16px;
+      border-radius:10px;
+      min-width:74px;
+      box-shadow:0 6px 20px rgba(35,50,60,0.04);
+      transform-origin:center;
+    }
+
+    .time .label{
+      display:block;
+      font-size:.75rem;
+      color:var(--muted);
+      margin-top:6px;
+      font-weight:600;
+    }
+
+    /* Inputs for countdown */
+    .countdown-controls{
+      display:flex;
+      gap:8px;
+      justify-content:center;
+      margin-bottom:14px;
+      align-items:center;
+    }
+    .countdown-controls input[type="number"]{
+      -moz-appearance: textfield;
+      appearance: textfield;
+      width:90px;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid rgba(36,50,64,0.06);
+      font-size:1rem;
+      text-align:center;
+      background: #fbfdfe;
+      outline:none;
+      transition:box-shadow .12s;
+    }
+    .countdown-controls input[type="number"]:focus{
+      box-shadow:0 6px 18px rgba(0,0,0,0.06);
+    }
+
+    /* Buttons */
+    .controls{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      margin-top:4px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      border:0;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:700;
+      cursor:pointer;
+      min-width:120px;
+      transition:transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+      box-shadow: 0 6px 18px rgba(100,120,140,0.06);
+      background:linear-gradient(180deg, #ffffff, #fbfbfb);
+    }
+    .btn.primary{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#10323a;
+    }
+    .btn.warn{
+      background:linear-gradient(90deg, #ffe6e6, #ffd3c2);
+      color:#6b2a1b;
+    }
+    .btn:active{ transform:translateY(2px) scale(.995); }
+
+    /* small helper */
+    .muted-small{ color:var(--muted); font-size:.85rem; margin-top:10px; }
+
+    /* animation classes added from JS */
+    .pop{
+      animation: pop .45s ease;
+    }
+    @keyframes pop{
+      0%{ transform:scale(.9); opacity:.2; }
+      60%{ transform:scale(1.08); opacity:1; }
+      100%{ transform:scale(1); }
+    }
+
+    .fadeIn{
+      animation: fadeIn .35s ease;
+    }
+    @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+
+    /* responsive */
+    @media (max-width:420px){
+      .time .segment{ min-width:56px; padding:8px 10px; }
+      .btn{ min-width:100px; padding:10px 12px; font-size:.95rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="application" aria-label="Cronómetro y cuenta regresiva">
+      <h1>Cronómetro y Cuenta Regresiva</h1>
+      <p class="lead">Similar a online-stopwatch — interfaz limpia, botones grandes y animaciones suaves.</p>
+
+      <!-- Modo: Cronómetro / Cuenta regresiva -->
+      <div class="modes" role="tablist" aria-label="Seleccionar modo">
+        <button class="mode-btn active" data-mode="stopwatch" id="mode-stopwatch" role="tab" aria-selected="true">Cronómetro</button>
+        <button class="mode-btn" data-mode="countdown" id="mode-countdown" role="tab" aria-selected="false">Cuenta regresiva</button>
+      </div>
+
+      <!-- Display principal -->
+      <div class="display" id="display">
+        <div class="time" id="timeDisplay" aria-live="polite" aria-atomic="true">
+          <div class="segment" id="minutesSegment">
+            <div id="minutes">00</div>
+            <span class="label">MIN</span>
+          </div>
+          <div class="segment" id="secondsSegment">
+            <div id="seconds">00</div>
+            <span class="label">SEC</span>
+          </div>
+          <div class="segment" id="msSegment">
+            <div id="milliseconds">000</div>
+            <span class="label">MS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controles para cuenta regresiva -->
+      <div class="countdown-controls" id="countdownControls" aria-hidden="true">
+        <input type="number" id="inputMinutes" min="0" max="999" placeholder="Minutos" aria-label="Minutos">
+        <input type="number" id="inputSeconds" min="0" max="59" placeholder="Segundos" aria-label="Segundos">
+        <button class="btn" id="setCountdown">Establecer</button>
+      </div>
+
+      <!-- Botones de control -->
+      <div class="controls" role="group" aria-label="Controles principales">
+        <button class="btn primary" id="startBtn">Iniciar</button>
+        <button class="btn" id="pauseBtn" disabled>Pausar</button>
+        <button class="btn" id="resumeBtn" style="display:none;">Reanudar</button>
+        <button class="btn warn" id="resetBtn">Reiniciar</button>
+      </div>
+
+      <div class="muted-small" id="note">Selecciona el modo, ingresa tiempo si usas cuenta regresiva y presiona <strong>Iniciar</strong>.</div>
+    </div>
+  </div>
+
+  <!-- Script: solo carga del archivo; todo el comportamiento está en script.js -->
+  <script src="script.js" defer></script>
+</body>
+</html>
