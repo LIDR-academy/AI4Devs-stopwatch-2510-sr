@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronómetro y Cuenta Atrás</title>
+    <style>
+        /* --- Fuentes y Contenedor Principal --- */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none; /* Estándar */
+        }
+
+        .app-container {
+            width: 380px;
+            max-width: 100%;
+            border: 3px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .screen {
+            display: none; /* Oculto por defecto */
+            flex-direction: column;
+            width: 100%;
+        }
+
+        /* --- 1. Pantalla de Inicio --- */
+        #home-screen {
+            display: flex; /* Visible por defecto */
+            flex-direction: row;
+        }
+
+        .home-choice {
+            flex: 1;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .home-choice:first-child {
+            background-color: #f0fff0; /* Verde claro */
+            border-right: 1px solid #ccc;
+        }
+
+        .home-choice:last-child {
+            background-color: #f0f8ff; /* Verde/Azul claro (spec) */
+        }
+        
+        .home-choice .arrow {
+            font-size: 80px;
+            line-height: 1;
+            margin-top: 15px;
+            text-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .green-arrow {
+            color: #28a745;
+        }
+
+        .red-arrow {
+            color: #dc3545;
+        }
+
+        /* --- 2 & 3. Pantallas de Timer --- */
+        .timer-container {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-bottom: 3px solid #333;
+        }
+
+        .display {
+            background-color: #fff;
+            border: 3px solid #adb5bd;
+            border-radius: 5px;
+            padding: 20px 15px;
+            text-align: right;
+            font-family: 'Orbitron', 'Courier New', Courier, monospace;
+            font-size: 3.2rem;
+            font-weight: bold;
+            position: relative;
+            line-height: 1;
+            color: #212529;
+        }
+
+        .display .ms {
+            font-size: 1.5rem;
+            color: #6c757d;
+            position: absolute;
+            right: 18px;
+            bottom: 12px;
+        }
+
+        /* --- Botones --- */
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .btn {
+            font-family: Arial, sans-serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 15px 10px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            cursor: pointer;
+            flex: 1;
+            margin: 0 5px;
+            text-align: center;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+        }
+
+        .btn-green {
+            background-color: #28a745;
+            color: white;
+            border-color: #1e7e34;
+        }
+        .btn-green:active { background-color: #218838; }
+
+        .btn-red {
+            background-color: #dc3545;
+            color: white;
+            border-color: #b21f2d;
+        }
+        .btn-red:active { background-color: #c82333; }
+
+        .btn-blue {
+            background-color: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
+        .btn-blue:active { background-color: #0069d9; }
+
+        .btn-grey {
+            background-color: #adb5bd;
+            color: #fff;
+            border-color: #888;
+        }
+        .btn-grey:active { background-color: #98a1a8; }
+
+        /* --- 3. Numpad de Countdown --- */
+        .numpad {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .btn-numpad {
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 12px 5px;
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #adb5bd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-numpad:active { background-color: #e2e6ea; }
+
+        #cd-set-btn, #cd-clear-setup-btn {
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 12px 5px;
+        }
+
+        /* --- Footer --- */
+        .app-footer {
+            background-color: #004a99;
+            padding: 10px 15px;
+        }
+
+        .btn-back {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .btn-back:active { color: #ddd; }
+
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+
+        <section id="home-screen" class="screen" style="display: flex;">
+            <div id="btn-to-stopwatch" class="home-choice">
+                <div>Stopwatch</div>
+                <div class="arrow green-arrow">&#9650;</div>
+            </div>
+            <div id="btn-to-countdown" class="home-choice">
+                <div>Countdown</div>
+                <div class="arrow red-arrow">&#9660;</div>
+            </div>
+        </section>
+
+        <section id="stopwatch-screen" class="screen">
+            <div class="timer-container">
+                <div class="display">
+                    <span id="sw-display">00:00:00</span>
+                    <span id="sw-ms" class="ms">000</span>
+                </div>
+                <div class="button-row">
+                    <button id="sw-main-btn" class="btn btn-green">Start</button>
+                    <button id="sw-clear-btn" class="btn btn-red">Clear</button>
+                </div>
+            </div>
+            <footer class="app-footer">
+                <button id="sw-back-btn" class="btn-back">&lt; Back</button>
+            </footer>
+        </section>
+
+        <section id="countdown-screen" class="screen">
+            <div class="timer-container">
+                <div class="display">
+                    <span id="cd-display">00:00:00</span>
+                    <span id="cd-ms" class="ms">000</span>
+                </div>
+                
+                <div id="cd-setup-view">
+                    <div class="numpad">
+                        <button class="btn btn-numpad" data-num="5">5</button>
+                        <button class="btn btn-numpad" data-num="6">6</button>
+                        <button class="btn btn-numpad" data-num="7">7</button>
+                        <button class="btn btn-numpad" data-num="8">8</button>
+                        <button class="btn btn-numpad" data-num="9">9</button>
+                        <button id="cd-set-btn" class="btn btn-green">Set</button>
+                        
+                        <button class="btn btn-numpad" data-num="0">0</button>
+                        <button class="btn btn-numpad" data-num="1">1</button>
+                        <button class="btn btn-numpad" data-num="2">2</button>
+                        <button class="btn btn-numpad" data-num="3">3</button>
+                        <button class="btn btn-numpad" data-num="4">4</button>
+                        <button id="cd-clear-setup-btn" class="btn btn-grey">Clear</button>
+                    </div>
+                </div>
+
+                <div id="cd-run-view" style="display: none;">
+                    <div class="button-row">
+                        <button id="cd-main-btn" class="btn btn-green">Start</button>
+                        <button id="cd-clear-run-btn" class="btn btn-red">Clear</button>
+                    </div>
+                </div>
+            </div>
+            <footer class="app-footer">
+                <button id="cd-back-btn" class="btn-back">&lt; Back</button>
+            </footer>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
