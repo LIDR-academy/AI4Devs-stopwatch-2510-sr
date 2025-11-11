@@ -1,0 +1,15 @@
+
+
+Necesito que crees un StopWatch tomando como referencia el de esta web: https://www.online-stopwatch.com/ y utilizando estos archivos:
+
+
+index.html
+14 líneas
+
+html
+
+
+script.js
+2 líneas
+
+js
