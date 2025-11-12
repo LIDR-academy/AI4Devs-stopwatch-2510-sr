@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Stopwatch and Countdown</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="app">
+        
+        <header>
+            <div class="header-content">www.online-stopwatch.com</div>
+        </header>
+
+        <main id="mode-selector" class="view active">
+            <div class="mode-option" id="select-stopwatch">
+                <h2>Stopwatch</h2>
+                <div class="arrow up"></div> </div>
+            <div class="mode-option" id="select-countdown">
+                <h2>Countdown</h2>
+                <div class="arrow down"></div> </div>
+        </main>
+
+        <main id="stopwatch-mode" class="view">
+            <div class="timer-display-container">
+                <div class="timer-display mono" id="stopwatch-display">00:00:00<span class="ms-display">000</span></div>
+            </div>
+
+            <div class="controls-row">
+                <button class="control-button green-button large-button" id="stopwatch-start-pause">Start</button>
+                <button class="control-button red-button large-button" id="stopwatch-reset">Clear</button>
+            </div>
+
+            <div class="back-button-container">
+                <button class="back-button" id="stopwatch-back">
+                    &larr; Back
+                </button>
+            </div>
+        </main>
+
+        <main id="countdown-mode" class="view">
+            <div class="timer-display-container">
+                <div class="timer-display mono" id="countdown-display">00:00:00<span class="ms-display">000</span></div>
+            </div>
+
+            <div class="keypad-container" id="countdown-keypad">
+                <div class="keypad-row">
+                    <button class="keypad-button green-key" data-key="5">5</button>
+                    <button class="keypad-button green-key" data-key="6">6</button>
+                    <button class="keypad-button green-key" data-key="7">7</button>
+                    <button class="keypad-button green-key" data-key="8">8</button>
+                    <button class="keypad-button green-key" data-key="9">9</button>
+                    <button class="keypad-button green-key" id="countdown-set">Set</button>
+                </div>
+                <div class="keypad-row">
+                    <button class="keypad-button green-key" data-key="0">0</button>
+                    <button class="keypad-button green-key" data-key="1">1</button>
+                    <button class="keypad-button green-key" data-key="2">2</button>
+                    <button class="keypad-button green-key" data-key="3">3</button>
+                    <button class="keypad-button green-key" data-key="4">4</button>
+                    <button class="keypad-button grey-key" id="countdown-clear-keypad">Clear</button>
+                </div>
+            </div>
+
+            <div class="controls-row countdown-controls">
+                <button class="control-button green-button large-button" id="countdown-start-pause">Start</button>
+                <button class="control-button red-button large-button" id="countdown-reset">Clear</button>
+            </div>
+
+            <div class="back-button-container">
+                <button class="back-button" id="countdown-back">
+                    &larr; Back
+                </button>
+            </div>
+        </main>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
