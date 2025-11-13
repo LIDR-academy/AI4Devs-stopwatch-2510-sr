@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronómetro y Temporizador</title>
+    <script src="script.js"></script>
+
+    <!-- Integración del CDN de Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+   
+    <style>
+        /* Estilos personalizados para centrado y estética */
+        body {
+            background-color: #f8f9fa;
+        }
+        .time-display {
+            font-size: 3.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .input-box {
+            width: 100px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container my-5">
+        <h1 class="text-center mb-5 text-primary">Control de Tiempo Integrado</h1>
+        
+        <div class="row g-4">
+            
+            <!-- Módulo 1: Cronómetro (Conteo Ascendente) -->
+            <div class="col-md-6">
+                <div class="card shadow-lg h-100">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="mb-0">Cronómetro (Stopwatch)</h3>
+                    </div>
+                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                        
+                        <!-- Área de Visualización del Cronómetro -->
+                        <div id="stopwatchDisplay" class="time-display bg-light text-dark shadow-sm">
+                            00:00:00
+                        </div>
+                        
+                        <!-- Controles del Cronómetro -->
+                        <div class="btn-group">
+                            <button id="stopwatchButton" class="btn btn-lg btn-success" onclick="toggleStopwatch()">Start</button>
+                            <button id="stopwatchResetButton" class="btn btn-lg btn-secondary" onclick="resetStopwatch()">Reset</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Módulo 2: Temporizador (Conteo Regresivo) -->
+            <div class="col-md-6">
+                <div class="card shadow-lg h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Temporizador (Countdown)</h3>
+                    </div>
+                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                        
+                        <!-- Entradas de Usuario para el Temporizador -->
+                        <div class="d-flex mb-4">
+                            <div class="mx-2">
+                                <label class="form-label fw-bold">Horas</label>
+                                <input type="number" id="inputHours" class="form-control input-box" value="0" min="0" max="99">
+                            </div>
+                            <div class="mx-2">
+                                <label class="form-label fw-bold">Minutos</label>
+                                <input type="number" id="inputMinutes" class="form-control input-box" value="0" min="0" max="59">
+                            </div>
+                            <div class="mx-2">
+                                <label class="form-label fw-bold">Segundos</label>
+                                <input type="number" id="inputSeconds" class="form-control input-box" value="0" min="0" max="59">
+                            </div>
+                        </div>
+
+                        <!-- Área de Visualización del Temporizador -->
+                        <div id="countdownDisplay" class="time-display bg-light text-dark shadow-sm">
+                            00:00:00
+                        </div>
+                        
+                        <!-- Controles del Temporizador -->
+                        <div class="btn-group">
+                            <button id="countdownButton" class="btn btn-lg btn-primary" onclick="toggleCountdown()">Start Countdown</button>
+                            <button id="countdownResetButton" class="btn btn-lg btn-secondary" onclick="resetCountdown()">Reset Countdown</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+</html>
