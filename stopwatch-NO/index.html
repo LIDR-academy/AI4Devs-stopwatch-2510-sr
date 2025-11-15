@@ -1,216 +1,204 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Timer and Countdown</title>
-
-  <!-- Inline styles just for this prototype. In a real app,
-       these would live in styles.css -->
-  <style>
-    :root {
-      --blue: #0046af;
-      --blue-dark: #013463;
-      --green: #32e062;
-      --red: #ff3b3b;
-      --page-bg: #f5f7fb;
-      --card-radius: 12px;
-      --shadow-soft: 0 6px 18px rgba(0, 0, 0, 0.12);
-      --transition-fast: 0.2s ease-out;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      min-height: 100vh;
-      background: var(--page-bg);
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      color: #111827;
-    }
-
-    header.top-banner {
-      background: linear-gradient(90deg, var(--blue-dark), var(--blue));
-      color: #e5f2ff;
-      padding: 0.85rem 1.5rem;
-      text-align: center;
-      font-size: 0.95rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    }
-
-    header.top-banner p span {
-      font-weight: 600;
-    }
-
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1.5rem 1rem 2.5rem;
-      gap: 1.5rem;
-    }
-
-    h1.page-title {
-      font-size: 1.8rem;
-      letter-spacing: 0.03em;
-      color: #0f172a;
-      text-align: center;
-    }
-
-    .brand-strip {
-      background: var(--blue);
-      color: #eff6ff;
-      padding: 0.8rem 1rem;
-      width: 100%;
-      max-width: 980px;
-      text-align: center;
-      border-radius: 999px;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
-    }
-
-    .mode-selector {
-      width: 100%;
-      max-width: 980px;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1.5rem;
-      margin-top: 0.5rem;
-    }
-
-    .mode-card {
-      position: relative;
-      border: none;
-      border-radius: var(--card-radius);
-      background: #ffffff;
-      padding: 1.75rem 1rem 2.5rem;
-      box-shadow: var(--shadow-soft);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.25rem;
-      cursor: pointer;
-      transition: transform var(--transition-fast),
-        box-shadow var(--transition-fast),
-        background var(--transition-fast);
-    }
-
-    .mode-card:focus-visible {
-      outline: 3px solid #2563eb;
-      outline-offset: 3px;
-    }
-
-    .mode-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.25);
-    }
-
-    .mode-title {
-      font-size: 1.5rem;
-      letter-spacing: 0.04em;
-    }
-
-    .mode-card.stopwatch .mode-title {
-      color: #047857;
-    }
-
-    .mode-card.countdown .mode-title {
-      color: #b91c1c;
-    }
-
-    .arrow {
-      width: 0;
-      height: 0;
-      border-left: 80px solid transparent;
-      border-right: 80px solid transparent;
-    }
-
-    .arrow-up {
-      border-bottom: 120px solid var(--green);
-    }
-
-    .arrow-down {
-      border-top: 120px solid var(--red);
-    }
-
-    .mode-label-strip {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 0.45rem 0.75rem;
-      text-align: center;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: #e5e7eb;
-      background: linear-gradient(90deg, #1e293b, #0f172a);
-      border-radius: 0 0 var(--card-radius) var(--card-radius);
-    }
-
-    @media (max-width: 720px) {
-      .mode-selector {
-        grid-template-columns: minmax(0, 1fr);
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>stopewatch</title>
+    <meta name="description" content="Landing de stopewatch: Stopwatch y Countdown." />
+    <style>
+      :root {
+        --bg: #0b3a53;
+        --card: #0f4f6a;
+        --card-hover: #126487;
+        --text: #ffffff;
+        --accent: #20c997;
+        --accent-contrast: #093a2d;
       }
 
-      .brand-strip {
-        border-radius: 16px;
-        font-size: 0.8rem;
-        line-height: 1.4;
+      /* Layout base */
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        color: var(--text);
+        background: radial-gradient(1200px 600px at 30% -10%, #166086 0%, var(--bg) 60%);
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        min-height: 100dvh;
       }
-    }
-  </style>
-</head>
-<body>
-  <header class="top-banner">
-    <p>
-      Everybody needs a stopwatch or a timer at some point — and there’s never one around!
-      <span>Now you have one online.</span>
-    </p>
-  </header>
 
-  <main>
-    <h1 class="page-title">Timer &amp; Countdown</h1>
+      header, footer {
+        padding: 1rem clamp(1rem, 3vw, 2rem);
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      header h1 {
+        margin: 0;
+        font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+        letter-spacing: 0.5px;
+      }
 
-    <div class="brand-strip">
-      timer-and-countdown.example
-    </div>
+      nav[aria-label="primary"] {
+        display: flex;
+        gap: .5rem;
+      }
 
-    <section class="mode-selector" aria-label="Choose timer mode">
-      <button
-        id="stopwatch-card"
-        class="mode-card stopwatch"
-        type="button"
-        aria-label="Open Stopwatch"
-      >
-        <h2 class="mode-title">Stopwatch</h2>
-        <div class="arrow arrow-up" aria-hidden="true"></div>
-        <div class="mode-label-strip">Click to open Stopwatch</div>
-      </button>
+      main {
+        display: grid;
+        place-items: center;
+        padding: clamp(1rem, 3vw, 2rem);
+      }
 
-      <button
-        id="countdown-card"
-        class="mode-card countdown"
-        type="button"
-        aria-label="Open Countdown"
-      >
-        <h2 class="mode-title">Countdown</h2>
-        <div class="arrow arrow-down" aria-hidden="true"></div>
-        <div class="mode-label-strip">Click to open Countdown</div>
-      </button>
-    </section>
-  </main>
+      /* Cards de la landing */
+      .grid {
+        width: min(1100px, 92vw);
+        display: grid;
+        grid-template-columns: repeat(2, minmax(240px, 1fr));
+        gap: clamp(1rem, 3vw, 2rem);
+      }
 
-  <script src="script.js"></script>
-</body>
+      .card {
+        background: linear-gradient(180deg, var(--card) 0%, #0e3f57 100%);
+        border: 1px solid #0a2c3d;
+        border-radius: 18px;
+        padding: clamp(1rem, 2.5vw, 2rem);
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: .5rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,.25);
+        transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+      }
+      .card h2 {
+        margin: 0 0 .25rem 0;
+        font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+      }
+      .card p { opacity: .9; margin: 0 0 .75rem 0; line-height: 1.35; }
+      .card:hover { transform: translateY(-2px); background: linear-gradient(180deg, var(--card-hover) 0%, #0e3f57 100%); }
+      .card:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+      .btn {
+        appearance: none;
+        border: 0;
+        border-radius: 999px;
+        padding: .9rem 1.25rem;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        color: var(--accent-contrast);
+        background: linear-gradient(180deg, #28e0ad 0%, var(--accent) 100%);
+        box-shadow: 0 6px 16px rgba(0,0,0,.25);
+      }
+      .btn:focus-visible { outline: 3px solid #b6ffe7; outline-offset: 2px; }
+      .btn.secondary {
+        background: #143e52;
+        color: var(--text);
+        border: 1px solid #0b2c3d;
+      }
+
+      /* Contenedores de vistas (SPA simple) */
+      .view { display: none; width: min(1100px, 92vw); }
+      .view.active { display: block; }
+
+      .backbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
+
+      .hero {
+        display: grid;
+        gap: 1rem;
+        text-align: center;
+        padding: clamp(1rem, 4vw, 2rem);
+        border-radius: 18px;
+        background: rgba(10, 35, 50, .45);
+        border: 1px solid rgba(255,255,255,.07);
+      }
+      .hero h2 { margin: 0; font-size: clamp(1.4rem, 3vw, 2rem); }
+      .hint { opacity: .9; font-size: .95rem; }
+
+      footer { opacity: .8; font-size: .9rem; text-align: center; }
+
+      /* Respeta usuarios con reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        .card, .btn { transition: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1 aria-label="stopewatch">⏱️ stopewatch</h1>
+      <nav aria-label="primary">
+        <!-- Enlaces rápidos opcionales -->
+        <button class="btn secondary" data-link="#/">Inicio</button>
+        <button class="btn secondary" data-link="#/stopwatch">Stopwatch</button>
+        <button class="btn secondary" data-link="#/countdown">Countdown</button>
+      </nav>
+    </header>
+
+    <main id="app" tabindex="-1">
+      <!-- Vista Landing -->
+      <section id="view-home" class="view active" aria-labelledby="home-title">
+        <div class="hero">
+          <h2 id="home-title">Elige una herramienta</h2>
+          <p class="hint">Interfaz limpia, accesible y lista para móvil/desktop.</p>
+        </div>
+
+        <div class="grid" role="list">
+          <article class="card" role="listitem">
+            <h2>Stopwatch</h2>
+            <p>Cronómetro que cuenta hacia arriba. Botones: <strong>Start/Stop/Continue</strong> y <strong>Clear</strong>.</p>
+            <div>
+              <button class="btn" data-link="#/stopwatch" aria-describedby="sw-desc">Ir a Stopwatch</button>
+              <span id="sw-desc" class="sr-only" aria-hidden="true"></span>
+            </div>
+          </article>
+
+          <article class="card" role="listitem">
+            <h2>Countdown</h2>
+            <p>Cuenta regresiva con teclado numérico, <strong>Set</strong> y <strong>Clear</strong>. Mismo diseño que Stopwatch.</p>
+            <div>
+              <button class="btn" data-link="#/countdown" aria-describedby="cd-desc">Ir a Countdown</button>
+              <span id="cd-desc" class="sr-only" aria-hidden="true"></span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Vista Stopwatch (placeholder para Task 2) -->
+      <section id="view-stopwatch" class="view" aria-labelledby="sw-title">
+        <div class="backbar">
+          <button class="btn secondary" data-link="#/">← Back</button>
+          <h2 id="sw-title" style="margin:0">Stopwatch</h2>
+          <span aria-hidden="true"></span>
+        </div>
+        <div class="hero">
+          <p class="hint">Aquí irá el cronómetro y controles en la <strong>Task 2</strong>.</p>
+        </div>
+      </section>
+
+      <!-- Vista Countdown (placeholder para Task 3) -->
+      <section id="view-countdown" class="view" aria-labelledby="cd-title">
+        <div class="backbar">
+          <button class="btn secondary" data-link="#/">← Back</button>
+          <h2 id="cd-title" style="margin:0">Countdown</h2>
+          <span aria-hidden="true"></span>
+        </div>
+        <div class="hero">
+          <p class="hint">Aquí irá la cuenta regresiva y el teclado en la <strong>Task 3</strong>.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <small>Hecho con buenas prácticas de HTML semántico y accesibilidad.</small>
+    </footer>
+
+    <script src="index.js" type="module"></script>
+  </body>
 </html>

@@ -1,44 +1,42 @@
-Act as a Senior Software Engineer with extensive experience in web applications using HTML and JavaScript. 
-We need to create an online stopwatch application with two main features. Follow good practices and write clean code —you are an expert.
-1 -  Stopwatch: it's a chronometer with 2 buttons, start and clear.
-  a. Start button:     
-     * When the user clicks the start button, it changes the label to stop, and the chronometer starts counting until the user clicks the button again (with the label stop)
-    * After the user click stop button, the chronometer stop change the label to continue, if the user click again the continue button, the chronmeter continue counting.  
- b. Clear button:
-     * When the user clicks the clear button, the chronometer resets to 0, even when it is counting or stopped.
-   
-2 - Countdown: it's a chronometer that requires setting the initial time to count down. It contains number buttons, a set button, and a clear button.
- - Numbers buttons: It's a keyword with all number buttons from 0 to 9. When some of them are clicked, it adds time to the chronometer, starting from seconds and progressing to hours, to set the countdown time.
- - Set button: 
-   * When the user clicks the set button, it changes the label to stop, and the chronometer starts counting down until the user clicks the button again (with the label pause)
-    * After the user click pause button, the chronometer stop change the label to continue, if the user click again the continue button, the chronmeter continue counting.      
+# Rol
+Actua com un Senior Software Engineer experto en web applicatons usando HTML y Javascript
 
-We will proceed to build this application in different tasks. I will pass prototypes for each one, and not continue with the next until I give you the OK.
+# Requerimiento
+Necesito crear un aplicacion con el nombre stopewatch con dos features principales. 
+1 - Stopwatch: es un cronometro con 2 botones:
+ - cronometro: es un cronometro que tiene hora, minutos y segundos en numeros grandes y  milisegundos en numeros muchos mas chicos abajo del reloj a la derecha 
 
-Task 1: Landing page, which will contain two buttons for both features, the  stopwatch and the countdown
+ - Start button: Cuando el user hace click en el boton, cambia el label a stop, y el cronometro empieza a contar. Cuando el usuario hace click de nuevo en el boton (con el label stop), el boton cambia de label a continue, y cuando el boton esta en modo continue, se reanuda la cuenta del reloj. Así sucesivamente hasta que se hace click en el boton Clear.
 
-Task 2: Stopwatch feature
+ - Clear button: Cuando el user hace click en el boton, el cronometro se resetea a 0, incluso cuando esta contando o esta parado.
 
-Task 3: Countdown feature
+2 - Countdown: Es un contador de tipo countdown que tiene un cronometro que hace la cuenta para abajo, un teclado con numeros del 0 a 9 , un boton set y un boton clear
 
-Ask clarifying questions if anything is ambiguous before generating the final input
+ - cronometro: es un cronometro que tiene hora, minutos y segundos en numeros grandes y  milisegundos en numeros muchos mas chicos abajo del reloj a la derecha. Mismo diseño que el stopwatch
 
-My template input is: 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Timer and Countdown</title>
-<link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<h1>Timer and Countdown</h1>
-<script src="script.js"></script>
-</body>
-</html>
+ - Botones teclado con numeros del 0 al 9: por cada boton que se haga click, va seteando los valores del cronometro de derecha a izquierda, ingresando segundos, minutos y horas. Los milisegundos no se setean, son solo lectura.
 
- You have to deliver index.html and script.js files with well-structured, clean code.
+ - boton set: cuando se hace click en el boton set, el cronometro comienza ha funcionar haciendo una cuenta hacia abajo hasta llegar a 0. Luego de que se hace click en el boton set, desaparecen el boton set, el boton clear y los botones numericos, y se muestran los botones de start y clear: 
+  - Start button: Cuando el user hace click en el boton, cambia el label a stop, y el cronometro empieza a contar. Cuando el usuario hace click de nuevo en el boton (con el label stop), el boton cambia de label a continue, y cuando el boton esta en modo continue, se reanuda la cuenta del reloj. Así sucesivamente hasta que se hace click en el boton Clear.
 
-Let's start with the task 1: 
-Landing page, I attached the prototype that we need to build
+  - Clear button: Cuando el user hace click en el boton, el cronometro se resetea a 0, incluso cuando esta contando o esta parado.
+
+ - boton clear: cuando el usuario hace click en el boton clear, se resetea el cronometro todo a 0.
+
+# Diseño
+La aplicacion va a constar de un Landin page Con boton que navegan a una funcionalidad o la otra, stopwatch y countdown.
+
+Tanto la pantalla de stopwatch como countdown tiene un boton Back para volver a la landing page. 
+
+Adjuto Imagen con los prototipos.
+
+# Salida 
+La salida de esta aplicacion va a ser un HTML index.html y un JS index.js, sigue las bueas practicas de programacion, entrega codigo limpio y bien estrucurado como un experto.
+
+Empecemos a construir la aplicacion, la vamos a realizar en diferentes Tareas, vamos a desarrollar tarea por tarea, hasta que no termines con una tarea y yo te de el OK, no vamos a seguir con la siguiente.
+
+Task 1 : Landing page
+
+Task 2: Stopwatch
+
+Task 3: Countdown

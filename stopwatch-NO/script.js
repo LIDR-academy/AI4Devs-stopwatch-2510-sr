@@ -1,35 +1,49 @@
+/* stopewatch — SPA routing mínimo para la landing
+   - Hash routing (#/, #/stopwatch, #/countdown)
+   - Gestión de foco para accesibilidad
+   - Sin lógica de cronómetros aún (se agrega en Task 2 y Task 3)
+*/
+"use strict";
 
-// script.js
-// Landing page logic for Timer & Countdown.
-// For Task 1 we only wire up the feature buttons with simple placeholders.
-// The actual stopwatch and countdown implementations will be added in later tasks.
+const routes = {
+  "/": "view-home",
+  "/stopwatch": "view-stopwatch",
+  "/countdown": "view-countdown",
+};
 
-(function () {
-  "use strict";
+const app = document.getElementById("app");
 
-  /**
-   * Setup click handlers once the DOM is ready.
-   */
-  document.addEventListener("DOMContentLoaded", () => {
-    const stopwatchCard = document.getElementById("stopwatch-card");
-    const countdownCard = document.getElementById("countdown-card");
+// Navegación por botones del header/cards/back
+document.addEventListener("click", (ev) => {
+  const link = ev.target.closest("[data-link]");
+  if (!link) return;
+  const href = link.getAttribute("data-link");
+  if (href?.startsWith("#/")) {
+    ev.preventDefault();
+    window.location.hash = href;
+  }
+});
 
-    if (!stopwatchCard || !countdownCard) {
-      // If the layout changes and elements are missing, fail fast in dev.
-      console.warn(
-        "[TimerApp] Expected landing buttons not found. Check index.html structure."
-      );
-      return;
-    }
+// Enrutador simple
+function applyRoute() {
+  const hash = window.location.hash || "#/";
+  const path = hash.replace("#", "");
+  const viewId = routes[path] ?? routes["/"];
 
-    stopwatchCard.addEventListener("click", () => {
-      // Placeholder for Task 2: this will eventually show the stopwatch UI.
-      alert("Stopwatch mode will be implemented in Task 2.");
-    });
+  // Mostrar/ocultar vistas
+  document.querySelectorAll(".view").forEach((el) => el.classList.remove("active"));
+  const view = document.getElementById(viewId);
+  view.classList.add("active");
 
-    countdownCard.addEventListener("click", () => {
-      // Placeholder for Task 3: this will eventually show the countdown UI.
-      alert("Countdown mode will be implemented in Task 3.");
-    });
-  });
-})();
+  // Llevar foco al main para lectores de pantalla/teclado
+  // (buena base para accesibilidad)
+  app.focus({ preventScroll: false });
+}
+
+// Inicialización
+window.addEventListener("hashchange", applyRoute);
+window.addEventListener("DOMContentLoaded", () => {
+  // Ruta por defecto
+  if (!location.hash) location.hash = "#/";
+  applyRoute();
+});
