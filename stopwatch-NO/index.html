@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>stopewatch</title>
-    <meta name="description" content="Landing de stopewatch: Stopwatch y Countdown." />
+    <meta name="description" content="Stopwatch y Countdown." />
     <style>
       :root {
         --bg: #0b3a53;
@@ -13,14 +13,18 @@
         --text: #ffffff;
         --accent: #20c997;
         --accent-contrast: #093a2d;
+
+        --display-bg: #0b2f41;
+        --display-border: #0a2c3d;
+        --green: #1ec44d;
+        --red: #e53935;
       }
 
-      /* Layout base */
       * { box-sizing: border-box; }
       html, body { height: 100%; }
       body {
         margin: 0;
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
         color: var(--text);
         background: radial-gradient(1200px 600px at 30% -10%, #166086 0%, var(--bg) 60%);
         display: grid;
@@ -28,32 +32,13 @@
         min-height: 100dvh;
       }
 
-      header, footer {
-        padding: 1rem clamp(1rem, 3vw, 2rem);
-      }
-      header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      header h1 {
-        margin: 0;
-        font-size: clamp(1.25rem, 2.4vw, 1.75rem);
-        letter-spacing: 0.5px;
-      }
+      header, footer { padding: 1rem clamp(1rem, 3vw, 2rem); }
+      header { display: flex; align-items: center; justify-content: space-between; }
+      header h1 { margin: 0; font-size: clamp(1.25rem, 2.4vw, 1.75rem); letter-spacing: .5px; }
 
-      nav[aria-label="primary"] {
-        display: flex;
-        gap: .5rem;
-      }
+      nav[aria-label="primary"] { display: flex; gap: .5rem; }
 
-      main {
-        display: grid;
-        place-items: center;
-        padding: clamp(1rem, 3vw, 2rem);
-      }
-
-      /* Cards de la landing */
+      main { display: grid; place-items: center; padding: clamp(1rem, 3vw, 2rem); }
       .grid {
         width: min(1100px, 92vw);
         display: grid;
@@ -72,59 +57,67 @@
         box-shadow: 0 10px 30px rgba(0,0,0,.25);
         transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
       }
-      .card h2 {
-        margin: 0 0 .25rem 0;
-        font-size: clamp(1.25rem, 2.2vw, 1.6rem);
-      }
+      .card h2 { margin: 0 0 .25rem 0; font-size: clamp(1.25rem, 2.2vw, 1.6rem); }
       .card p { opacity: .9; margin: 0 0 .75rem 0; line-height: 1.35; }
       .card:hover { transform: translateY(-2px); background: linear-gradient(180deg, var(--card-hover) 0%, #0e3f57 100%); }
       .card:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
 
       .btn {
-        appearance: none;
-        border: 0;
-        border-radius: 999px;
-        padding: .9rem 1.25rem;
-        font-weight: 700;
-        font-size: 1rem;
-        cursor: pointer;
+        appearance: none; border: 0; border-radius: 999px;
+        padding: .9rem 1.25rem; font-weight: 700; font-size: 1rem; cursor: pointer;
         color: var(--accent-contrast);
         background: linear-gradient(180deg, #28e0ad 0%, var(--accent) 100%);
         box-shadow: 0 6px 16px rgba(0,0,0,.25);
       }
       .btn:focus-visible { outline: 3px solid #b6ffe7; outline-offset: 2px; }
-      .btn.secondary {
-        background: #143e52;
-        color: var(--text);
-        border: 1px solid #0b2c3d;
-      }
+      .btn.secondary { background: #143e52; color: var(--text); border: 1px solid #0b2c3d; }
+      .btn.danger { background: linear-gradient(180deg, #ff7c7a 0%, var(--red) 100%); color: #2a0a0a; }
+      .btn.success { background: linear-gradient(180deg, #5df59b 0%, var(--green) 100%); color: #062612; }
 
-      /* Contenedores de vistas (SPA simple) */
       .view { display: none; width: min(1100px, 92vw); }
       .view.active { display: block; }
+      .backbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
 
-      .backbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 1rem;
-      }
-
-      .hero {
+      /* DISPLAY del reloj (Stopwatch y Countdown comparten estilos) */
+      .clock {
+        position: relative;
+        user-select: none;
+        background: var(--display-bg);
+        border: 2px solid var(--display-border);
+        border-radius: 16px;
+        padding: 1.2rem 1.2rem 1.8rem;
         display: grid;
-        gap: 1rem;
-        text-align: center;
-        padding: clamp(1rem, 4vw, 2rem);
-        border-radius: 18px;
-        background: rgba(10, 35, 50, .45);
-        border: 1px solid rgba(255,255,255,.07);
+        place-items: center;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,.04), 0 12px 30px rgba(0,0,0,.25);
       }
-      .hero h2 { margin: 0; font-size: clamp(1.4rem, 3vw, 2rem); }
-      .hint { opacity: .9; font-size: .95rem; }
+      .clock__main {
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 2px;
+        font-size: clamp(2.2rem, 7vw, 3.8rem);
+      }
+      .clock__ms {
+        position: absolute;
+        right: .9rem; bottom: .5rem;
+        font-variant-numeric: tabular-nums;
+        font-size: clamp(.8rem, 2vw, 1rem);
+        opacity: .9;
+      }
+
+      .stack { display: grid; gap: .9rem; }
+      .row { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+      /* Teclado numérico */
+      .keypad {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(70px, 1fr));
+        gap: .6rem;
+      }
+      .keypad .btn { padding: 1rem 1rem; font-size: 1.25rem; }
+
+      .hidden { display: none !important; }
 
       footer { opacity: .8; font-size: .9rem; text-align: center; }
 
-      /* Respeta usuarios con reduced motion */
       @media (prefers-reduced-motion: reduce) {
         .card, .btn { transition: none; }
       }
@@ -134,7 +127,6 @@
     <header>
       <h1 aria-label="stopewatch">⏱️ stopewatch</h1>
       <nav aria-label="primary">
-        <!-- Enlaces rápidos opcionales -->
         <button class="btn secondary" data-link="#/">Inicio</button>
         <button class="btn secondary" data-link="#/stopwatch">Stopwatch</button>
         <button class="btn secondary" data-link="#/countdown">Countdown</button>
@@ -142,63 +134,94 @@
     </header>
 
     <main id="app" tabindex="-1">
-      <!-- Vista Landing -->
+      <!-- Landing -->
       <section id="view-home" class="view active" aria-labelledby="home-title">
-        <div class="hero">
-          <h2 id="home-title">Elige una herramienta</h2>
-          <p class="hint">Interfaz limpia, accesible y lista para móvil/desktop.</p>
-        </div>
+        <div class="grid" role="list" aria-describedby="home-title">
+          <h2 id="home-title" style="grid-column:1/-1;margin:.25rem 0 0 0;">Elige una herramienta</h2>
 
-        <div class="grid" role="list">
           <article class="card" role="listitem">
             <h2>Stopwatch</h2>
-            <p>Cronómetro que cuenta hacia arriba. Botones: <strong>Start/Stop/Continue</strong> y <strong>Clear</strong>.</p>
-            <div>
-              <button class="btn" data-link="#/stopwatch" aria-describedby="sw-desc">Ir a Stopwatch</button>
-              <span id="sw-desc" class="sr-only" aria-hidden="true"></span>
-            </div>
+            <p>Cronómetro hacia arriba con <strong>Start / Stop / Continue</strong> y <strong>Clear</strong>.</p>
+            <div><button class="btn" data-link="#/stopwatch">Ir a Stopwatch</button></div>
           </article>
 
           <article class="card" role="listitem">
             <h2>Countdown</h2>
-            <p>Cuenta regresiva con teclado numérico, <strong>Set</strong> y <strong>Clear</strong>. Mismo diseño que Stopwatch.</p>
-            <div>
-              <button class="btn" data-link="#/countdown" aria-describedby="cd-desc">Ir a Countdown</button>
-              <span id="cd-desc" class="sr-only" aria-hidden="true"></span>
-            </div>
+            <p>Cuenta regresiva con teclado numérico, <strong>Set</strong> y <strong>Clear</strong>.</p>
+            <div><button class="btn" data-link="#/countdown">Ir a Countdown</button></div>
           </article>
         </div>
       </section>
 
-      <!-- Vista Stopwatch (placeholder para Task 2) -->
+      <!-- Stopwatch -->
       <section id="view-stopwatch" class="view" aria-labelledby="sw-title">
         <div class="backbar">
           <button class="btn secondary" data-link="#/">← Back</button>
           <h2 id="sw-title" style="margin:0">Stopwatch</h2>
           <span aria-hidden="true"></span>
         </div>
-        <div class="hero">
-          <p class="hint">Aquí irá el cronómetro y controles en la <strong>Task 2</strong>.</p>
+
+        <div class="stack">
+          <div class="clock" role="timer" aria-live="polite" aria-atomic="true">
+            <div id="sw-main" class="clock__main" aria-label="tiempo hh:mm:ss">00:00:00</div>
+            <div id="sw-ms" class="clock__ms" aria-label="milisegundos">000</div>
+          </div>
+
+          <div class="row">
+            <button id="sw-toggle" class="btn success" type="button">Start</button>
+            <button id="sw-clear" class="btn danger" type="button">Clear</button>
+          </div>
         </div>
       </section>
 
-      <!-- Vista Countdown (placeholder para Task 3) -->
+      <!-- Countdown -->
       <section id="view-countdown" class="view" aria-labelledby="cd-title">
         <div class="backbar">
           <button class="btn secondary" data-link="#/">← Back</button>
           <h2 id="cd-title" style="margin:0">Countdown</h2>
           <span aria-hidden="true"></span>
         </div>
-        <div class="hero">
-          <p class="hint">Aquí irá la cuenta regresiva y el teclado en la <strong>Task 3</strong>.</p>
+
+        <div class="stack">
+          <div class="clock" role="timer" aria-live="polite" aria-atomic="true">
+            <div id="cd-main" class="clock__main" aria-label="tiempo hh:mm:ss">00:00:00</div>
+            <div id="cd-ms" class="clock__ms" aria-label="milisegundos">000</div>
+          </div>
+
+          <!-- Controles previos a Set -->
+          <div id="cd-setup" class="stack">
+            <div class="keypad" role="group" aria-label="teclado numérico">
+              <button class="btn" data-key="1">1</button>
+              <button class="btn" data-key="2">2</button>
+              <button class="btn" data-key="3">3</button>
+              <button class="btn" data-key="4">4</button>
+              <button class="btn" data-key="5">5</button>
+              <button class="btn" data-key="6">6</button>
+              <button class="btn" data-key="7">7</button>
+              <button class="btn" data-key="8">8</button>
+              <button class="btn" data-key="9">9</button>
+              <div></div>
+              <button class="btn" data-key="0">0</button>
+              <div></div>
+            </div>
+            <div class="row">
+              <button id="cd-set" class="btn success" type="button">Set</button>
+              <button id="cd-clear1" class="btn danger" type="button">Clear</button>
+            </div>
+          </div>
+
+          <!-- Controles tras Set -->
+          <div id="cd-run" class="row hidden" aria-hidden="true">
+            <button id="cd-toggle" class="btn" type="button">Stop</button>
+            <button id="cd-clear2" class="btn danger" type="button">Clear</button>
+          </div>
         </div>
       </section>
     </main>
 
-    <footer>
-      <small>Hecho con buenas prácticas de HTML semántico y accesibilidad.</small>
-    </footer>
+    <footer><small>&nbsp;</small></footer>
 
-    <script src="index.js" type="module"></script>
+    <!-- Recuerda: NO type="module" para file:// -->
+    <script src="./script.js"></script>
   </body>
 </html>

@@ -1,7 +1,9 @@
-# Rol
+
+# PROMPT 1
+## Rol
 Actua com un Senior Software Engineer experto en web applicatons usando HTML y Javascript
 
-# Requerimiento
+## Requerimiento
 Necesito crear un aplicacion con el nombre stopewatch con dos features principales. 
 1 - Stopwatch: es un cronometro con 2 botones:
  - cronometro: es un cronometro que tiene hora, minutos y segundos en numeros grandes y  milisegundos en numeros muchos mas chicos abajo del reloj a la derecha 
@@ -23,14 +25,14 @@ Necesito crear un aplicacion con el nombre stopewatch con dos features principal
 
  - boton clear: cuando el usuario hace click en el boton clear, se resetea el cronometro todo a 0.
 
-# Diseño
+## Diseño
 La aplicacion va a constar de un Landin page Con boton que navegan a una funcionalidad o la otra, stopwatch y countdown.
 
 Tanto la pantalla de stopwatch como countdown tiene un boton Back para volver a la landing page. 
 
 Adjuto Imagen con los prototipos.
 
-# Salida 
+## Salida 
 La salida de esta aplicacion va a ser un HTML index.html y un JS index.js, sigue las bueas practicas de programacion, entrega codigo limpio y bien estrucurado como un experto.
 
 Empecemos a construir la aplicacion, la vamos a realizar en diferentes Tareas, vamos a desarrollar tarea por tarea, hasta que no termines con una tarea y yo te de el OK, no vamos a seguir con la siguiente.
@@ -40,3 +42,18 @@ Task 1 : Landing page
 Task 2: Stopwatch
 
 Task 3: Countdown
+
+# PROMPT 2
+
+Algo esta fallando , tengo este error y no navega Access to script at 'file:///C:/Users/Nico/workspace/ai4devs/AI4Devs-stopwatch-2510-sr/stopwatch-NO/index.js' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: chrome, chrome-extension, chrome-untrusted, data, http, https, isolated-app.Understand this error index.html:185 GET file:///C:/Users/Nico/workspace/ai4devs/AI4Devs-stopwatch-2510-sr/stopwatch-NO/index.js net::ERR_FAILEDUnderstand this error
+
+# PROMPT 3 
+
+Ahora da este error GET file:///C:/Users/Nico/workspace/ai4devs/AI4Devs-stopwatch-2510-sr/stopwatch-NO/index.js net::ERR_FILE_NOT_FOUND
+
+# PROMPT 4
+
+El script se llamaba script.js, mala mia, ahora funciona a la perfección, vamos con la última tarea
+
+
+
