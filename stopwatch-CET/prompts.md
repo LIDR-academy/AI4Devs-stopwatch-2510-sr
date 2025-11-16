@@ -1,3 +1,5 @@
+LLM: ChatGPT
+
 # Prompt 1
 
 You are an expert chatgpt prompt generator.   Review the below prompt and help me make it flawless, think it through carefully and ask me any clariying questions. 
