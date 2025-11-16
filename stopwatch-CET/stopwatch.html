@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stopwatch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="shared.js"></script>
+  <script defer src="stopwatch.js"></script>
+</head>
+<body class="bg-slate-100 min-h-screen flex flex-col">
+  <main class="w-full max-w-6xl mx-auto px-4 pt-8 pb-24 grow">
+    <!-- Display -->
+    <div class="w-full mb-10">
+      <div class="w-full bg-indigo-50 border-[14px] border-slate-700 rounded-[3rem] shadow-md px-6 sm:px-10 py-6 sm:py-8 flex items-center justify-center">
+        <div class="flex items-end justify-center space-x-3 sm:space-x-5">
+          <span id="sw-hours" class="text-5xl sm:text-7xl md:text-8xl font-semibold leading-none tabular-nums">00</span>
+          <span class="text-5xl sm:text-7xl md:text-8xl font-semibold leading-none">:</span>
+          <span id="sw-minutes" class="text-5xl sm:text-7xl md:text-8xl font-semibold leading-none tabular-nums">00</span>
+          <span class="text-5xl sm:text-7xl md:text-8xl font-semibold leading-none">:</span>
+
+          <!-- Seconds with milliseconds absolutely positioned below -->
+          <span class="relative inline-block">
+            <span id="sw-seconds" class="block text-5xl sm:text-7xl md:text-8xl font-semibold leading-none tabular-nums">00</span>
+            <span id="sw-milliseconds"
+                  class="absolute left-1/2 -translate-x-1/2 top-full translate-y-[2px] text-xl sm:text-2xl md:text-3xl font-semibold leading-tight tabular-nums">
+              000
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="w-full flex flex-col sm:flex-row sm:space-x-8 space-y-6 sm:space-y-0">
+      <button id="sw-left" type="button"
+              class="w-full py-5 sm:py-6 rounded-[2.5rem] border-[10px] border-slate-700 bg-green-500 hover:bg-green-600 text-white text-3xl sm:text-4xl font-semibold shadow-md transition">
+        Start
+      </button>
+      <button id="sw-right" type="button"
+              class="w-full py-5 sm:py-6 rounded-[2.5rem] border-[10px] border-slate-700 bg-red-500 hover:bg-red-600 text-white text-3xl sm:text-4xl font-semibold shadow-md transition">
+        Clear
+      </button>
+    </div>
+  </main>
+
+  <!-- Back bar -->
+  <a href="home.html" class="block w-full bg-blue-800 text-white py-4 text-2xl font-semibold text-left px-6">
+    ← Back
+  </a>
+</body>
+</html>
