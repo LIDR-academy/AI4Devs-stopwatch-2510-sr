@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Countdown</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="shared.js"></script>
+  <script defer src="countdown.js"></script>
+</head>
+<body class="bg-slate-100 min-h-screen flex flex-col">
+  <main class="w-full max-w-6xl mx-auto px-4 pt-8 pb-24 grow">
+    <!-- Display -->
+    <div class="w-full mb-10">
+      <div class="w-full bg-indigo-50 border-[14px] border-slate-700 rounded-[3rem] shadow-md px-6 sm:px-10 py-6 sm:py-8 flex items-center justify-center">
+        <div class="flex items-end justify-center space-x-3 sm:space-x-5">
+          <span id="cd-hours" class="text-5xl sm:text-7xl md:text-8xl font-semibold leading-none tabular-nums">00</span>
+          <span class="text-5xl sm:text-7xl md:text-8xl font-semibold leading-none">:</span>
+          <span id="cd-minutes" class="text-5xl sm:text-7xl md:text-8xl font-semibold leading-none tabular-nums">00</span>
+          <span class="text-5xl sm:text-7xl md:text-8xl font-semibold leading-none">:</span>
+          <span class="relative inline-block">
+            <span id="cd-seconds" class="block text-5xl sm:text-7xl md:text-8xl font-semibold leading-none tabular-nums">00</span>
+            <span id="cd-milliseconds"
+                  class="absolute left-1/2 -translate-x-1/2 top-full translate-y-[2px] text-xl sm:text-2xl md:text-3xl font-semibold leading-tight tabular-nums">
+              000
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Keypad mode -->
+    <section id="cd-keypad" class="space-y-6">
+      <div class="grid grid-cols-6 gap-4">
+        <!-- 5..9 + Set -->
+        <button data-digit="5" class="cd-key green-key">5</button>
+        <button data-digit="6" class="cd-key green-key">6</button>
+        <button data-digit="7" class="cd-key green-key">7</button>
+        <button data-digit="8" class="cd-key green-key">8</button>
+        <button data-digit="9" class="cd-key green-key">9</button>
+        <button id="cd-set" class="w-full py-4 rounded-[1.75rem] border-[8px] border-slate-700 bg-green-500 hover:bg-green-600 text-white text-3xl font-semibold shadow transition">Set</button>
+      </div>
+
+      <div class="grid grid-cols-6 gap-4">
+        <!-- 0..4 + Clear -->
+        <button data-digit="0" class="cd-key green-key">0</button>
+        <button data-digit="1" class="cd-key green-key">1</button>
+        <button data-digit="2" class="cd-key green-key">2</button>
+        <button data-digit="3" class="cd-key green-key">3</button>
+        <button data-digit="4" class="cd-key green-key">4</button>
+        <button id="cd-keypad-clear" class="w-full py-4 rounded-[1.75rem] border-[8px] border-slate-700 bg-gray-300 hover:bg-gray-400 text-slate-900 text-3xl font-semibold shadow transition">Clear</button>
+      </div>
+    </section>
+
+    <!-- Run mode buttons (hidden until Set) -->
+    <section id="cd-run" class="hidden w-full mt-6">
+      <div class="w-full flex flex-col sm:flex-row sm:space-x-8 space-y-6 sm:space-y-0">
+        <button id="cd-left" type="button"
+                class="w-full py-5 sm:py-6 rounded-[2.5rem] border-[10px] border-slate-700 bg-green-500 hover:bg-green-600 text-white text-3xl sm:text-4xl font-semibold shadow-md transition">
+          Start
+        </button>
+        <button id="cd-right" type="button"
+                class="w-full py-5 sm:py-6 rounded-[2.5rem] border-[10px] border-slate-700 bg-red-500 hover:bg-red-600 text-white text-3xl sm:text-4xl font-semibold shadow-md transition">
+          Clear
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Back bar -->
+  <a href="home.html" class="block w-full bg-blue-800 text-white py-4 text-2xl font-semibold text-left px-6">
+    ← Back
+  </a>
+
+  <!-- Inline small Tailwind component classes for keypad keys -->
+  <script>
+    // tiny utility classes for keypad buttons without custom CSS file
+    document.querySelectorAll('.green-key').forEach(el => {
+      el.className = 'w-full py-4 rounded-[1.75rem] border-[
