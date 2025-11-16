@@ -1,5 +1,6 @@
-/* countdown.js
+/* countdown.js (fixed)
  * Countdown domain + UI with keypad input and run mode.
+ * Robust selectors + event delegation so HTML style tweaks don't break behavior.
  */
 
 (function () {
@@ -30,14 +31,14 @@
       start() {
         if (this.running || this.remaining <= 0) return;
         this.running = true;
-        this.last = performance.now ? performance.now() : Date.now();
+        this.last = (typeof performance !== "undefined" && performance.now) ? performance.now() : Date.now();
         this.id = setInterval(this._tick, 10);
         console.info("[Countdown] Started");
       }
   
       _tick() {
         if (!this.running) return;
-        const now = performance.now ? performance.now() : Date.now();
+        const now = (typeof performance !== "undefined" && performance.now) ? performance.now() : Date.now();
         const delta = Math.max(0, now - this.last);
         this.last = now;
   
@@ -58,8 +59,10 @@
       pause() {
         if (!this.running) return;
         this.running = false;
-        clearInterval(this.id);
-        this.id = null;
+        if (this.id !== null) {
+          clearInterval(this.id);
+          this.id = null;
+        }
         console.info("[Countdown] Paused @", this.remaining.toFixed(0), "ms left");
       }
   
@@ -84,17 +87,15 @@
     // --- UI ---
     class CountdownUI {
       constructor() {
-        this.ids = {
-          h: "cd-hours", m: "cd-minutes", s: "cd-seconds", ms: "cd-milliseconds"
-        };
+        this.ids = { h: "cd-hours", m: "cd-minutes", s: "cd-seconds", ms: "cd-milliseconds" };
   
-        // Keypad
-        this.keypad = document.getElementById("cd-keypad");
+        // Sections / controls
+        this.keypad     = document.getElementById("cd-keypad");
         this.runSection = document.getElementById("cd-run");
-        this.setBtn = document.getElementById("cd-set");
+        this.setBtn     = document.getElementById("cd-set");
         this.kpClearBtn = document.getElementById("cd-keypad-clear");
-        this.left = document.getElementById("cd-left");
-        this.right = document.getElementById("cd-right");
+        this.left       = document.getElementById("cd-left");
+        this.right      = document.getElementById("cd-right");
   
         // Buffer logic: up to 6 digits HHMMSS
         this.buffer = "";
@@ -109,69 +110,81 @@
       }
   
       wireEvents() {
-        // keypad digits
-        document.querySelectorAll(".cd-key[data-digit]").forEach(btn => {
-          btn.addEventListener("click", () => {
-            const d = btn.getAttribute("data-digit");
-            if (this.buffer.length >= 6) return; // ignore extra
-            this.buffer += d;
-            this.render(this.bufferMs());
+        // Event delegation for ALL keypad clicks (digits, Set, Clear)
+        if (this.keypad) {
+          this.keypad.addEventListener("click", (ev) => {
+            const target = ev.target.closest("[data-digit], #cd-set, #cd-keypad-clear");
+            if (!target) return;
+  
+            // Digit buttons
+            if (target.hasAttribute("data-digit")) {
+              const d = target.getAttribute("data-digit");
+              if (this.buffer.length >= 6) return; // ignore extra input
+              this.buffer += d;
+              this.render(this.bufferMs());
+              return;
+            }
+  
+            // Keypad Clear
+            if (target.id === "cd-keypad-clear") {
+              this.buffer = "";
+              this.cd.clearAll();
+              return;
+            }
+  
+            // Set
+            if (target.id === "cd-set") {
+              const ms = this.bufferMs();
+              const clamped = Math.min(ms, (99 * 3600 + 59 * 60 + 59) * 1000);
+              this.cd.setFromMs(clamped);
+              this.showRunMode();
+              return;
+            }
           });
-        });
-  
-        this.kpClearBtn.addEventListener("click", () => {
-          this.buffer = "";
-          this.cd.clearAll();
-        });
-  
-        this.setBtn.addEventListener("click", () => {
-          // compute ms from buffer and clamp to 99:59:59
-          const ms = this.bufferMs();
-          const clamped = Math.min(ms, (99 * 3600 + 59 * 60 + 59) * 1000);
-          this.cd.setFromMs(clamped);
-          this.showRunMode();
-        });
+        }
   
         // Run-mode buttons
-        this.left.addEventListener("click", () => {
-          if (!this.cd.running) {
-            this.cd.start();
-            Shared.setLeftButton("Pause", "green", this.left);
-          } else {
-            this.cd.pause();
-            Shared.setLeftButton("Continue", "blue", this.left);
-          }
-        });
+        if (this.left) {
+          this.left.addEventListener("click", () => {
+            if (!this.cd.running) {
+              this.cd.start();
+              Shared.setLeftButton("Pause", "green", this.left);
+            } else {
+              this.cd.pause();
+              Shared.setLeftButton("Continue", "blue", this.left);
+            }
+          });
+        }
   
-        this.right.addEventListener("click", () => {
-          const wasBlue = this.left.classList.contains("bg-blue-500");
-          this.cd.clearToSetValue();
-          // color rule: keep blue if it was blue; else green
-          if (wasBlue) {
-            Shared.setLeftButton("Start", "blue", this.left);
-          } else {
-            Shared.setLeftButton("Start", "green", this.left);
-          }
-        });
+        if (this.right) {
+          this.right.addEventListener("click", () => {
+            const wasBlue = this.left && this.left.classList.contains("bg-blue-500");
+            this.cd.clearToSetValue();
+            if (this.left) {
+              if (wasBlue) {
+                Shared.setLeftButton("Start", "blue", this.left);
+              } else {
+                Shared.setLeftButton("Start", "green", this.left);
+              }
+            }
+          });
+        }
       }
   
       showRunMode() {
-        // hide keypad, show run buttons
-        this.keypad.classList.add("hidden");
-        this.runSection.classList.remove("hidden");
-        Shared.setLeftButton("Start", "green", this.left);
+        if (this.keypad) this.keypad.classList.add("hidden");
+        if (this.runSection) this.runSection.classList.remove("hidden");
+        if (this.left) Shared.setLeftButton("Start", "green", this.left);
       }
   
       showKeypadMode() {
-        this.keypad.classList.remove("hidden");
-        this.runSection.classList.add("hidden");
-        // reset UI state
+        if (this.keypad) this.keypad.classList.remove("hidden");
+        if (this.runSection) this.runSection.classList.add("hidden");
         this.buffer = "";
       }
   
       onFinished() {
-        // stop at 00:00:00.000 (already rendered), keep in run mode
-        // Don't auto-reset; the user can press Start again or Clear (to set value).
+        // Stop at zero and remain in run mode; user can Start again or Clear.
       }
   
       bufferMs() {
@@ -190,6 +203,12 @@
       }
     }
   
-    document.addEventListener("DOMContentLoaded", () => new CountdownUI());
+    document.addEventListener("DOMContentLoaded", () => {
+      try {
+        new CountdownUI();
+      } catch (e) {
+        console.error("[CountdownUI] init error:", e);
+      }
+    });
   })();
   
