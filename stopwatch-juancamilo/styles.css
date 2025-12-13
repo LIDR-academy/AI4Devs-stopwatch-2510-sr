@@ -1,0 +1,97 @@
+/* Layout general */
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Arial', 'Helvetica', 'Roboto', sans-serif;
+    background-color: #f5f5f5;
+    font-variant-numeric: tabular-nums;
+}
+
+h1 {
+    margin-bottom: 40px;
+}
+
+/* Contenedor principal */
+.stopwatch-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+/* Display del reloj */
+.display {
+    position: relative;
+    background-color: #E6E6FA;
+    border: 5px solid #222;
+    border-radius: 50px;
+    padding: 20px 40px;
+    font-size: 5rem;
+    font-weight: bold;
+    color: #000;
+    display: flex;
+    align-items: flex-end;
+}
+
+.display .milliseconds {
+    font-size: 1.25rem; /* aprox 1/4 del tamaño principal */
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+}
+
+/* Botones */
+.buttons {
+    display: flex;
+    gap: 25px;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: 4px solid #222;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+button:active {
+    transform: translateY(2px);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Botón Start */
+#startBtn {
+    background: linear-gradient(to bottom, #7ff962, #5CD648);
+    color: #000;
+}
+
+/* Botón Clear */
+#clearBtn {
+    background: linear-gradient(to bottom, #ff6a5c, #EE3B2F);
+    color: #fff;
+}
+
+/* Responsive básico */
+@media (max-width: 480px) {
+    .display {
+        font-size: 3rem;
+        padding: 15px 25px;
+    }
+
+    .display .milliseconds {
+        font-size: 0.9rem;
+        bottom: 8px;
+        right: 15px;
+    }
+
+    button {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+}
